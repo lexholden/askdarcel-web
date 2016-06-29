@@ -1,4 +1,4 @@
-import { images } from '..';
+import { images } from '.';
 
 describe('images', () => {
   describe('icon', () => {
@@ -19,3 +19,4 @@ describe('images', () => {
     });
   });
 });
+
