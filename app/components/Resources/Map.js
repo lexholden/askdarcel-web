@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Google from '../../utils/google';
 
 class Gmap extends Component {
   constructor(props) {

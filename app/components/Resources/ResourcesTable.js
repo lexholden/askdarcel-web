@@ -259,7 +259,7 @@ class ResourcesRow extends Component {
 	render() {
 		return (
 			<li className="results-table-entry">
-				<Link to={{ pathname: "resource", query: { id: this.props.resource.id } }}>
+				<Link to={{ pathname: "resource/" + this.props.resource.id }}>
 					<div className="entry-photo-rating">
 					  <img className="entry-img" src={buildImgURL(this.props.resource.addresses)} />
             <div className="entry-rating excellent">

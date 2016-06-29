@@ -10,9 +10,9 @@ class Resource extends React.Component {
 		this.state = {resource: {}};
 	}
 
-	loadResourceFromServer() {
-		let { query } = this.props.location;
-		let resourceID = query.id;
+  loadResourceFromServer() {
+    let resourceID = this.props.location.pathname.match(
+	/resource\/([^/]+)/)[1];
 		let url = '/api/resources/' + resourceID;
 		fetch(url).then(r => r.json())
 		.then(data => {
@@ -84,3 +84,4 @@ class Resource extends React.Component {
 // };
 
 export default Resource;
+
