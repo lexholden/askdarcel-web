@@ -8,10 +8,12 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-      '**/*.test.js': ['webpack']
+      '**/*.test.js': ['webpack', 'sourcemap']
     },
 
-    webpack: require('../../webpack.config.js'),
+    webpack: Object.assign(
+      {}, require('../../webpack.config.js'),
+      { devtool: 'inline-source-map' }),
 
     reporters: ['progress'],
 
@@ -31,3 +33,4 @@ module.exports = function(config) {
     concurrency: Infinity
   });
 };
+

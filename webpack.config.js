@@ -51,6 +51,10 @@ module.exports = {
           'file?name=[name]-[sha512:hash:hex:8].[ext]',
           'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ]
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
       }
     ]
   },
@@ -69,4 +73,5 @@ module.exports = {
     }
   }
 };
+
 

@@ -10,6 +10,10 @@ class Resource extends React.Component {
 		this.state = {resource: {}};
 	}
 
+  componentWillMount() {
+//    this.props.loadResource(this.props.id);
+  }
+
   loadResourceFromServer() {
     let resourceID = this.props.location.pathname.match(
 	/resource\/([^/]+)/)[1];
@@ -84,4 +88,6 @@ class Resource extends React.Component {
 // };
 
 export default Resource;
+
+
 
