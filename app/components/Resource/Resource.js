@@ -1,36 +1,26 @@
-
 import React, { PropTypes } from 'react';
 import {AddressInfo, BusinessHours, PhoneNumber, Website, Languages} from './ResourceInfos';
 import CommunicationBoxes from './CommunicationBoxes';
 import Services from './Services.js';
 
 class Resource extends React.Component {
-	constructor() {
-		super();
-		this.state = {resource: {}};
-	}
+//   componentWillMount() {
+// //    this.props.loadResource(this.props.id);
+//   }
 
-  componentWillMount() {
-//    this.props.loadResource(this.props.id);
-  }
+  // loadResourceFromServer() {
+  //   let resourceID = this.props.location.pathname.match(
+  //       /resource\/([^/]+)/)[1];
+  //   let url = '/api/resources/' + resourceID;
+  //   fetch(url).then(r => r.json())
+  //     .then(data => {
+  //       this.setState({resource: data.resource});
+  //     })
+  //   ;
+  // }
 
-  loadResourceFromServer() {
-    let resourceID = this.props.location.pathname.match(
-	/resource\/([^/]+)/)[1];
-		let url = '/api/resources/' + resourceID;
-		fetch(url).then(r => r.json())
-		.then(data => {
-			this.setState({resource: data.resource});
-		})
-		;
-	}
-
-	componentDidMount() {
-		this.loadResourceFromServer();
-	}
-
-	render() {
-		return (
+  render() {
+    return (
       <div className="org-container">
         <article className="org">
           <div className="main-column">
@@ -38,9 +28,9 @@ class Resource extends React.Component {
               <header>
                 <img className="org-img" src="http://lorempixel.com/100/100/city/" />
                 <div className="org-info">
-                  <h1>{this.state.resource.name}</h1>
+                  <h1>{this.props.resource.name}</h1>
                   <h4>Category 1, Category 2, Category 3</h4>
-                  <p><AddressInfo addresses={this.state.resource.addresses} /></p>
+                  <p><AddressInfo addresses={this.props.resource.addresses} /></p>
                 </div>
               </header>
               <div className="rating-summary-container">
@@ -56,9 +46,9 @@ class Resource extends React.Component {
                 <p>This is an organisation's long description{this.props.description}</p>
               </div>
               <ul className="org-details">
-                <BusinessHours schedule_days={this.state.resource.addresses} />
-                <PhoneNumber phones={this.state.resource.phones} />
-                <Website website={this.state.resource.website} />
+                <BusinessHours schedule_days={this.props.resource.addresses} />
+                <PhoneNumber phones={this.props.resource.phones} />
+                <Website website={this.props.resource.website} />
                 <Languages />
               </ul>
               <div className="org-actions">
@@ -66,7 +56,7 @@ class Resource extends React.Component {
               </div>
             </section>
 
-            <Services description={this.state.resource.long_description} services={this.state.resource.services}/>
+            <Services description={this.props.resource.long_description} services={this.props.resource.services}/>
           </div>
 
           <aside className="org-map">
@@ -75,19 +65,8 @@ class Resource extends React.Component {
 
         </article>
       </div>
-		);
-	}
+    );
+  }
 }
 
-// Resource.propTypes = {
-//   news: PropTypes.arrayOf(PropTypes.shape({
-//     title: PropTypes.string.isRequired,
-//     link: PropTypes.string.isRequired,
-//     contentSnippet: PropTypes.string,
-//   })).isRequired,
-// };
-
 export default Resource;
-
-
-

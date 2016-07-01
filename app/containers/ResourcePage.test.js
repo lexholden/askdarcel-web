@@ -26,10 +26,18 @@ describe('ResourcePage', () => {
   });
 
   it('should render the resource if the resource is loaded', () => {
-    store = configureStore()({ resource: { } });
+    const resource = {
+    };
+    store = configureStore()({
+      resources: {
+        byId: {
+          42: resource
+        }
+      }
+    });
     const rendered = mount(<ResourcePage
                            store={store}
                            params={{ id: 42}} />);
-    expect(rendered.contains(<Resource />)).toEqual(true);
+    expect(rendered.contains(<Resource resource={resource} />)).toEqual(true);
   });
 });

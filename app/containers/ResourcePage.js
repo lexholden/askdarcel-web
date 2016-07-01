@@ -14,17 +14,19 @@ class ResourcePage extends React.Component {
   }
 
   render() {
-    if (this.props.resource == null) {
+    const resource = this.props.resource;
+    if (resource == null) {
       return <LoadingIndicator />;
     } else {
-      return <Resource />;
+      return <Resource resource={resource} />;
     }
   }
 }
 
 function mapStateToProps(state, ownProps) {
   const resourceId = ownProps.params.id;
-  return { resourceId, resource: state.resource };
+  const resource = state.resources && state.resources.byId[resourceId]
+  return { resourceId, resource };
 }
 
 export default connect(
