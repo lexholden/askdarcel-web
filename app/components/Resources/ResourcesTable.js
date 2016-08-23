@@ -54,21 +54,34 @@ class ResourcesTable extends Component {
       params.query = searchQuery;
     }
     let url = path + '?' + queryString.stringify(params);
-    fetch(url).then(r => r.json())
-      .then(data => {
-        let openResources = data.resources.filter(resource => {
-          let hours = openHours(resource.schedule.schedule_days);
-          if(hours) {
-            return resource;
-          }
-        });
-        this.setState({
-          allResources: data.resources,
-          resources: data.resources,
-          currentPage: data.resources.slice(0,resultsPerPage),
-          openResources: openResources
-        });
+    fetch(url)
+    .then(r => {
+    	if(r.status == 200) {
+    		return r.json();
+    	} else {
+    		throw "Error fetching: " + r.status
+    	}
+    })
+    .then(data => {
+      let openResources = data.resources.filter(resource => {
+        let hours = openHours(resource.schedule.schedule_days);
+        if(hours) {
+          return resource;
+        }
       });
+      this.setState({
+        allResources: data.resources,
+        resources: data.resources,
+        currentPage: data.resources.slice(0,resultsPerPage),
+        openResources: openResources
+      });
+    })
+    .catch(err => {
+    	console.error(err);
+    	this.setState({
+    		resources: []
+    	});
+    });
   }
 
   getNextResources() {
@@ -147,7 +160,7 @@ class ResourcesTable extends Component {
           self.loadResourcesFromServer(loc);
         })
         .catch(err => {
-          console.error(err);
+          console.log(err);
           self.loadResourcesFromServer(null);
         });
     }
