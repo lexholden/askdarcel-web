@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Gmap from './ResourcesMap.js';
 import queryString from 'query-string';
+import Loader from '../Loader';
 
 // Show the span of results (11 - 20 for example rather than the #10)
 // Make the map update with proper markers
@@ -148,22 +149,7 @@ class ResourcesTable extends Component {
   }
 
   render() {
-    return !this.state.resources ? <div className="loader">
-      <div className="sk-fading-circle">
-        <div className="sk-circle1 sk-circle"></div>
-        <div className="sk-circle2 sk-circle"></div>
-        <div className="sk-circle3 sk-circle"></div>
-        <div className="sk-circle4 sk-circle"></div>
-        <div className="sk-circle5 sk-circle"></div>
-        <div className="sk-circle6 sk-circle"></div>
-        <div className="sk-circle7 sk-circle"></div>
-        <div className="sk-circle8 sk-circle"></div>
-        <div className="sk-circle9 sk-circle"></div>
-        <div className="sk-circle10 sk-circle"></div>
-        <div className="sk-circle11 sk-circle"></div>
-        <div className="sk-circle12 sk-circle"></div>
-      </div>
-    </div> : (
+    return !this.state.resources ? <Loader /> : (
                         <div className="results">
                                                 <div className="results-table">
                                                         <header>
