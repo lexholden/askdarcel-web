@@ -38,11 +38,12 @@ class ResourcesTable extends Component {
     let categoryId = query.categoryid;
     let searchQuery = query.query;
 
-    var path = '/api/resources';
-    var params = {
-      lat: userLocation.lat,
-      long: userLocation.lng
-    };
+    let path = '/api/resources';
+    let params = {};
+    if(userLocation) {
+      params.lat = userLocation.lat;
+      params.long = userLocation.lng;
+    }
     if (categoryId) {
       this.setState({
         categoryName: cats[categoryId]
@@ -144,6 +145,10 @@ class ResourcesTable extends Component {
       this.getLocationGoogle()
         .then(loc => {
           self.loadResourcesFromServer(loc);
+        })
+        .catch(err => {
+          console.error(err);
+          self.loadResourcesFromServer(null);
         });
     }
   }
