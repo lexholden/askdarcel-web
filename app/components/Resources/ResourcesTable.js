@@ -149,34 +149,34 @@ class ResourcesTable extends Component {
   }
 
   render() {
-    return !this.state.resources ? <Loader /> : (
-                        <div className="results">
-                                                <div className="results-table">
-                                                        <header>
-                <h1 className="results-title">{this.state.categoryName}</h1>
-                <span className="results-count">{this.state.allResources.length} Results</span>
-              </header>
-                                                        <div className="results-filters">
-                                                                <ul>
-                                                                        <li>Filter:</li>
-                                                                        <li><a className="filters-button disabled" onClick={this.filterResources.bind(this)}>{this.state.openFilter ? "All" : "Open Now"}</a></li>
-                                                                </ul>
-                                                        </div>
-              <div className="results-table-body">
-                <ResourcesList resources={this.state.currentPage} location={this.state.location} page={this.state.page} />
-                <div className="pagination">
-                  <div className="pagination-count">
-                    {this.state.resources && this.state.resources.length ? <p>{this.state.page * resultsPerPage + 1} — {Math.min(this.state.resources.length, (this.state.page + 1) * resultsPerPage)} Results</p> : <p>No results found</p>}
-                  </div>
-                  {this.state.page ? <button className="btn btn-link" onClick={this.getPreviousResources.bind(this)}> Previous </button> : null}
-                  {Math.floor(this.state.currentPage.length / resultsPerPage) && this.state.allResources.length !== (this.state.page + 1) * resultsPerPage ? <button className="btn btn-link" onClick={this.getNextResources.bind(this)}> Next </button> : null}
+    return !this.state.resources ? <Loader />
+      : (<div className="results">
+          <div className="results-table">
+            <header>
+              <h1 className="results-title">{this.state.categoryName}</h1>
+              <span className="results-count">{this.state.allResources.length} Results</span>
+            </header>
+            <div className="results-filters">
+              <ul>
+                <li>Filter:</li>
+                <li><a className="filters-button disabled" onClick={this.filterResources.bind(this)}>{this.state.openFilter ? "All" : "Open Now"}</a></li>
+              </ul>
+            </div>
+            <div className="results-table-body">
+              <ResourcesList resources={this.state.currentPage} location={this.state.location} page={this.state.page} />
+              <div className="pagination">
+                <div className="pagination-count">
+                  {this.state.resources && this.state.resources.length ? <p>{this.state.page * resultsPerPage + 1} — {Math.min(this.state.resources.length, (this.state.page + 1) * resultsPerPage)} Results</p> : <p>No results found</p>}
                 </div>
+                {this.state.page ? <button className="btn btn-link" onClick={this.getPreviousResources.bind(this)}> Previous </button> : null}
+                {Math.floor(this.state.currentPage.length / resultsPerPage) && this.state.allResources.length !== (this.state.page + 1) * resultsPerPage ? <button className="btn btn-link" onClick={this.getNextResources.bind(this)}> Next </button> : null}
               </div>
-                                                </div>
-                                        <div className="map">
-            <Gmap markers={getMapMarkers(this.state.currentPage, this.state.location)} />
-          </div>
-                        </div>
+            </div>
+        </div>
+        <div className="map">
+        <Gmap markers={getMapMarkers(this.state.currentPage, this.state.location)} />
+        </div>
+      </div>
     );
   }
 }
@@ -262,26 +262,19 @@ class ResourcesRow extends Component {
           this.props.resource.short_description ||
           (firstService && firstService.long_description);
     return (
-                        <li className="results-table-entry">
-                                <Link to={{ pathname: "resource", query: { id: this.props.resource.id } }}>
-                                        <div className="entry-photo-rating">
-                                          <img className="entry-img" src={buildImgURL(this.props.resource.address)} />
+        <li className="results-table-entry">
+          <Link to={{ pathname: "resource", query: { id: this.props.resource.id } }}>
+          <div className="entry-photo-rating">
+            <img className="entry-img" src={buildImgURL(this.props.resource.address)} />
             <div className="entry-rating excellent">
-              <i className="material-icons">sentiment_very_satisfied</i>
-              <span>{Math.floor(Math.random()*10)%6}</span>
+              <Rating ratings={this.props.resource.ratings} />
             </div>
           </div>
           <div className="entry-details">
             <h4 className="entry-title">{this.props.number}. {this.props.resource.name}</h4>
             <p className="entry-organization">{resourceDescription}</p>
             <p className="entry-meta">{buildAddressCell(this.props.resource.address)} &bull; {this.state.walkTime || "unknown"} walking</p>
-            <div className="quote">
-              <img className="quote-img" src="http://lorempixel.com/100/100/people/" />
-              <div className="quote-content">
-                <p className="quote-meta">username • April 22, 2016</p>
-                <p className="quote-text">they were nice and helpful</p>
-              </div>
-            </div>
+            <Quote quote={this.props.resource.quote}/>
             <ul className="entry-actions">
               <li>
                 <div className="button">
@@ -294,6 +287,40 @@ class ResourcesRow extends Component {
                                 </Link>
                         </li>
     );
+  }
+}
+
+class Rating extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (this.props.ratings.length ?
+      <div>
+        <i className="material-icons">sentiment_very_satisfied</i>
+        <span>{Math.round(this.props.ratings.reduce((total, rating) => {return total + rating}) / 5)}</span>
+      </div> :
+      null
+    )
+  }
+}
+
+class Quote extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    let quote = this.props.quote;
+    return (this.props.quote ?
+      <div className="quote">
+        <img className="quote-img" src={quote.url} />
+        <div className="quote-content">
+          <p className="quote-meta">{quote.username} • {quote.date}</p>
+          <p className="quote-text">{quote.text}</p>
+        </div>
+      </div> :
+      null
+    )
   }
 }
 

@@ -6,10 +6,12 @@ import { browserHistory } from 'react-router'
 class LargeHeader extends React.Component {
   submitSearch(e) {
     e.preventDefault();
-    browserHistory.push({
-        pathname: '/resources',
-        query: { query: this.searchComponent.value }
-    });
+    if(this.searchComponent.value) {
+      browserHistory.push({
+          pathname: '/resources',
+          query: { query: this.searchComponent.value }
+      });
+    }
     return false;
   }
 
