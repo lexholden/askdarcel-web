@@ -104,7 +104,14 @@ class ResourcesTable extends Component {
   getLocationGoogle() {
     // Results are not very accurate
     let url = 'https://www.googleapis.com/geolocation/v1/geolocate?key= AIzaSyBrt0fmU5Iarh0LdqEDp6bjMIqEOQB2hqU';
-    return fetch(url, {method: 'post'}).then(r => r.json())
+    return fetch(url, {method: 'post'})
+      .then(r => {
+      	if(r.status == 200) {
+      	  return r.json();
+      	} else {
+      		throw "Error getting location from google " + r.status;
+      	}
+      })
       .then(data => {
         this.setState({location: data.location});
         return data.location;
