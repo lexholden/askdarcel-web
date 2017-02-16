@@ -57,17 +57,27 @@ class ResourcesRow extends Component {
   }
 
   render() {
-    let firstService = this.props.resource.services[0];
+    let categoryId = this.props.categoryId;
+    let services = this.props.resource.services;
+    let service = this.props.resource.services[0];
+
+    services.forEach(item => {
+      if(item.id === categoryId) {
+        service = item;
+      }
+    }); 
+
     let resourceDescription = this.props.resource.long_description ||
           this.props.resource.short_description ||
-          (firstService && firstService.long_description);
+          (service && service.long_description);
     let hiddenStyle = {visibility: 'hidden'};
+    
     return (
         <li className="results-table-entry">
           <Link to={{ pathname: "resource", query: { id: this.props.resource.id, time: this.state.walkTime } }}>
             <header>
               <div className="entry-details">
-                <h4 className="entry-headline">{this.props.number}. {firstService.name}</h4>
+                <h4 className="entry-headline">{this.props.number}. {service.name}</h4>
                 <div className="entry-subhead">
                   <Rating ratings={this.props.resource.ratings} />
                   <p className="entry-distance">{buildAddressCell(this.props.resource.address)} &bull; {this.state.walkTime || "unknown"} walking</p>
