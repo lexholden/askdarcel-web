@@ -62,9 +62,11 @@ class ResourcesRow extends Component {
     let service = this.props.resource.services[0];
 
     services.forEach(item => {
-      if(item.id === categoryId) {
-        service = item;
-      }
+      item.categories.forEach(category => {
+        if(category.id === categoryId) {
+          service = item;
+        }
+      })
     }); 
 
     let resourceDescription = this.props.resource.long_description ||
