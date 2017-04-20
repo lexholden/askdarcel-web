@@ -30,7 +30,7 @@ class EditAddress extends Component {
 				<input type="text" placeholder="City" data-field='city' defaultValue={address.city} onChange={this.handleAddressChange} />
 				<input type="text" placeholder="State/Province" data-field='state_province' defaultValue={address.state_province} onChange={this.handleAddressChange} />
 				<input type="text" placeholder="Country" data-field='country' defaultValue={address.country} onChange={this.handleAddressChange} />
-				<input type="text" placeholder="Postal/Zip Code" data-field='posta_code' defaultValue={address.postal_code} onChange={this.handleAddressChange} />
+				<input type="text" placeholder="Postal/Zip Code" data-field='postal_code' defaultValue={address.postal_code} onChange={this.handleAddressChange} />
 			</li>
 		);
 	}
