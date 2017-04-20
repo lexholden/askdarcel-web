@@ -43,6 +43,13 @@
                         vertical-align: middle;
                         padding: calc-em(10px);
                     }
+                    textarea.request-cell {
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        width: 100%;
+                        font-size: 1.125rem;
+                    }
 
                     .name {
                         width: 25%;
@@ -59,8 +66,9 @@
 
     .actions {
         display: inline-block;
+        float: right;
         .material-icons {
-            display: block;
+            display: inline-block;
             cursor: pointer;
             width: calc-em(24px);
         }

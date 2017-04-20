@@ -1,11 +1,14 @@
 import React from 'react';
 import * as dataService from '../../utils/DataService';
+import * as ChangeRequestTypes from './ChangeRequestTypes';
+import Actions from './Actions';
 
 class ChangeRequest extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { existingRecord: {} };
+        this.state = { existingRecord: {}, changeRequestFields: props.changeRequest.field_changes };
         this.renderChangeRequest = this.renderChangeRequest.bind(this);
+        this.changeFieldValue = this.changeFieldValue.bind(this);
     }
 
     componentDidMount() {
@@ -60,11 +63,17 @@ class ChangeRequest extends React.Component {
         }
     }
 
+    changeFieldValue(newValue, index) {
+        let tempFields = this.state.changeRequestFields.slice();
+        tempFields[index].field_value = newValue;
+        this.setState({changeRequestFields: tempFields});
+    }
+
     renderChangeRequest() {
         let changedFields = [];
         let existingRecord = this.state.existingRecord;
 
-        this.props.changeRequest.field_changes.forEach((fieldChange) => {
+        this.state.changeRequestFields.forEach((fieldChange, i) => {
             let fieldName = fieldChange.field_name;
             let fieldValue = fieldChange.field_value;
 
@@ -76,7 +85,7 @@ class ChangeRequest extends React.Component {
                     </div>
                     <div className="request-entry">
                         <p className="request-cell name">{fieldName}</p>
-                        <p className="request-cell value">{fieldValue}</p>
+                        <textarea contenteditable="true" value={fieldValue} onChange={(e) => this.changeFieldValue(e.target.value, i)} className="request-cell value" />
                     </div>
                 </div>
             );
@@ -89,6 +98,13 @@ class ChangeRequest extends React.Component {
         return (
             <div className="change-log">
                 {this.renderChangeRequest(this.props.changeRequest)}
+                <Actions
+                    id={this.props.changeRequest.id}
+                    changeRequestFields={this.state.changeRequestFields}
+                    actionHandler={this.props.actionHandler}
+                    approveAction={ChangeRequestTypes.APPROVE}
+                    rejectAction={ChangeRequestTypes.DELETE}
+                />
             </div>
         );
     }

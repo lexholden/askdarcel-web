@@ -82,13 +82,7 @@ function renderIndividualRequests(changeRequests, actionHandler) {
             <div key={'cr'+changeRequest.id}>
                 <p>{changeRequest.type}</p>
                 <div className="request-container">
-                    <ChangeRequest changeRequest={changeRequest} />
-                    <Actions
-                        id={changeRequest.id}
-                        actionHandler={actionHandler}
-                        approveAction={ChangeRequestTypes.APPROVE}
-                        rejectAction={ChangeRequestTypes.DELETE}
-                    />
+                    <ChangeRequest changeRequest={changeRequest} actionHandler={actionHandler} />
                 </div>
             </div>
         );

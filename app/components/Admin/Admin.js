@@ -44,7 +44,7 @@ class Admin extends React.Component {
       });
     }
 
-    actionHandler(id, action) {
+    actionHandler(id, action, changeRequestFields) {
         let requestString = action.replace(/{(.*?)}/, id);
         let removalFunc;
         let logMessage;
@@ -68,7 +68,7 @@ class Admin extends React.Component {
                 break;
         }
 
-        dataService.post(requestString, getAuthRequestHeaders())
+        dataService.post(requestString, getAuthRequestHeaders(),null , changeRequestFields)
             .then((response) => {
                 if(response.ok) {
                     removalFunc(id);

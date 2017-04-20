@@ -1,6 +1,13 @@
 import * as _ from 'lodash/fp/object';
 
-export function post(url, body, headers) {
+export function post(url, body, headers, changeRequestFields) {
+    let payload = {};
+    if (changeRequestFields) {
+        console.log("changeRequestFields:", changeRequestFields);
+        changeRequestFields.forEach(request => {
+            payload[request.field_name] = request.field_value;
+        })
+    }
     let queryHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json"
