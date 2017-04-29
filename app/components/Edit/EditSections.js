@@ -7,11 +7,13 @@ import EditAddress from './EditAddress';
 import EditServices from './EditServices';
 import EditNotes from './EditNotes';
 import EditSchedule from './EditSchedule';
+import EditPhones from './EditPhones';
 import * as dataService from '../../utils/DataService';
 import { withRouter } from 'react-router';
 import { daysOfTheWeek } from '../../utils/index';
 
 class EditSections extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -26,6 +28,7 @@ class EditSections extends React.Component {
             phones: {},
             submitting: false
         };
+
         this.handleResourceFieldChange = this.handleResourceFieldChange.bind(this);
         this.handleScheduleChange = this.handleScheduleChange.bind(this);
         this.handlePhoneChange = this.handlePhoneChange.bind(this);
@@ -252,12 +255,13 @@ class EditSections extends React.Component {
     }
 
     handlePhoneChange(e) {
-        let phone = this.state.resource.phones[0];
-        let key = e.target.dataset.id;
-        if(phone) {
-            phone[key] = {number: e.target.value};
-            this.setState({phone: phone});
-        }
+        // let phone = this.state.resource.phones[0];
+        // let key = e.target.dataset.id;
+        // if(phone) {
+        //     phone[key] = {number: e.target.value};
+        //     this.setState({phone: phone});
+        // }
+        console.log(e);
     }
 
     handleResourceFieldChange(e) {
@@ -310,10 +314,7 @@ class EditSections extends React.Component {
 
             <EditAddress address={this.state.resource.address} updateAddress={this.handleAddressChange}/>
 
-            <li key="tel" className="edit--section--list--item tel">
-                <label>Telephone</label>
-                <input type="tel" placeholder="Phone number" data-id={resource.phones[0] && resource.phones[0].id} defaultValue={resource.phones[0] && resource.phones[0].number} onChange={this.handlePhoneChange} />
-            </li>
+            <EditPhones collection={this.state.resource.phones} handleChange={this.handlePhoneChange} />
 
             <li key="website" className="edit--section--list--item email">
                 <label>Website</label>
