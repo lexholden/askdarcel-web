@@ -71,12 +71,12 @@ class ChangeRequest extends React.Component {
             changedFields.push(
                 <div key={fieldName} className="request-fields">
                     <div className="request-entry">
-                        <p className="request-cell name existing">{fieldName}</p>
-                        <p className="request-cell value existing">{existingRecord[fieldName]}</p>
+                        <div className="request-cell name existing">{fieldName}</div>
+                        <div className="request-cell value existing">{existingRecord[fieldName]}</div>
                     </div>
                     <div className="request-entry">
-                        <p className="request-cell name">{fieldName}</p>
-                        <p className="request-cell value">{fieldValue}</p>
+                        <div className="request-cell name">{fieldName}</div>
+                        <div className="request-cell value">{fieldValue}</div>
                     </div>
                 </div>
             );

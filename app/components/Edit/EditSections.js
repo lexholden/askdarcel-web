@@ -23,6 +23,7 @@ class EditSections extends React.Component {
             addressFields: {},
             services: {},
             notes: {},
+            phones: {},
             submitting: false
         };
         this.handleResourceFieldChange = this.handleResourceFieldChange.bind(this);
@@ -203,7 +204,7 @@ class EditSections extends React.Component {
                 }
             }
         }
-        
+
         let scheduleDays = [];
         for(let day in daysTemplate) {
             if(daysTemplate.hasOwnProperty(day)) {
@@ -251,8 +252,11 @@ class EditSections extends React.Component {
     }
 
     handlePhoneChange(e) {
-        if(this.state.resource.phones[0]) {
-            this.setState({phone: {number: e.target.value}});
+        let phone = this.state.resource.phones[0];
+        let key = e.target.dataset.id;
+        if(phone) {
+            phone[key] = {number: e.target.value};
+            this.setState({phone: phone});
         }
     }
 
