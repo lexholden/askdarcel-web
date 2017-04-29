@@ -296,61 +296,85 @@ class EditSections extends React.Component {
     renderSectionFields() {
         let fields = [];
         let resource = this.state.resource;
-
         return (
-            <ul className="edit-section-list">
-                <label>Contact</label>
-                <li key="name" className="edit-section-item">
-                    <label>Name</label>
-                    <input type="text" placeholder="Name" data-field='name' defaultValue={resource.name} onChange={this.handleResourceFieldChange} />
-                </li>
-                <li key="tel" className="edit-section-item tel">
-                    <label>Telephone</label>
-                    <input type="tel" placeholder="Phone number" data-id={resource.phones[0] && resource.phones[0].id} defaultValue={resource.phones[0] && resource.phones[0].number} onChange={this.handlePhoneChange} />
-                </li>
-                <li key="website" className="edit-section-item email">
-                    <label>Website</label>
-                    <input type="url" defaultValue={resource.website} data-field='website' onChange={this.handleResourceFieldChange}/>
-                </li>
+        <section id="info" className="edit--section">
+        	<header className="edit--section--header">
+        		<h4>Info</h4>
+        	</header>
+          <ul className="edit--section--list">
+
+            <li key="name" className="edit--section--list--item">
+                <label>Name</label>
+                <input type="text" placeholder="Name" data-field='name' defaultValue={resource.name} onChange={this.handleResourceFieldChange} />
+            </li>
+
+            <EditAddress address={this.state.resource.address} updateAddress={this.handleAddressChange}/>
+
+            <li key="tel" className="edit--section--list--item tel">
+                <label>Telephone</label>
+                <input type="tel" placeholder="Phone number" data-id={resource.phones[0] && resource.phones[0].id} defaultValue={resource.phones[0] && resource.phones[0].number} onChange={this.handlePhoneChange} />
+            </li>
+
+            <li key="website" className="edit--section--list--item email">
+                <label>Website</label>
+                <input type="url" defaultValue={resource.website} data-field='website' onChange={this.handleResourceFieldChange}/>
+            </li>
+
+            <li key="long_description" className="edit--section--list--item">
                 <label>Description</label>
-                <li key="long_description" className="edit-section-item">
-                    <label>Long Description</label>
-                    <textarea defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
-                </li>
-                <li key="short_description" className="edit-section-item">
-                    <label>Short Description</label>
-                    <textarea defaultValue={resource.short_description} data-field='short_description' onChange={this.handleResourceFieldChange} />
-                </li>
-                <label>Address</label>
-                <EditAddress address={this.state.resource.address} updateAddress={this.handleAddressChange}/>
+                <textarea defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
+            </li>
 
-                <EditNotes notes={this.state.resource.notes} handleNotesChange={this.handleNotesChange} />
+            <EditSchedule schedule={this.state.resource.schedule} handleScheduleChange={this.handleScheduleChange} />
 
-                <EditServices services={this.state.resource.services} handleServiceChange={this.handleServiceChange} />
+            <EditNotes notes={this.state.resource.notes} handleNotesChange={this.handleNotesChange} />
 
-                <label>Hours</label>
-                <EditSchedule schedule={this.state.resource.schedule} handleScheduleChange={this.handleScheduleChange} />
-            </ul>
+          </ul>
+        </section>
         );
     }
 
-    render() {
-        return (
-            !this.state.resource ? <Loader /> :
-            <div className="edit-page">
-                <header className="edit-header">
-                    <a className="back-btn"></a>
-                    <h1 className="edit-title">{this.state.resource.name}</h1>
-                    <button className="edit-submit-btn" disabled={this.state.submitting} onClick={this.handleSubmit}>Save</button>
-                </header>
-                <ul className="edit-sections">
-                <section className="edit-section SECTION_NAME">
-                    {this.renderSectionFields()}
-                </section>
-                </ul>
-            </div>
+    renderServices() {
+    	let fields = [];
+      let resource = this.state.resource;
+    	return (
+    		<section id="services" className="edit--section">
+    			<header className="edit--section--header">
+    				<h4>Services</h4>
+    			</header>
+    			<ul className="edit--section--list">
+    				<EditServices services={this.state.resource.services} handleServiceChange={this.handleServiceChange} />
+    			</ul>
+    		</section>
+    	)
+    }
 
-        )
+    render() {
+      return (
+        !this.state.resource ? <Loader /> :
+        <div className="edit">
+        	<div className="edit--main">
+            <header className="edit--main--header">
+              <h1 className="edit--main--header--title">{this.state.resource.name}</h1>
+            </header>
+            <div className="edit--sections">
+	            {this.renderSectionFields()}
+	            {this.renderServices()}
+            </div>
+          </div>
+          <div className="edit--aside">
+          	<div className="edit--aside--content">
+	          	<button className="edit--aside--content--submit" disabled={this.state.submitting} onClick={this.handleSubmit}>Save changes</button>
+	          	<nav className="edit--aside--content--nav">
+	          		<ul>
+	          			<li><a href="#info">Info</a></li>
+	          			<li><a href="#services">Services</a></li>
+	          		</ul>
+	          	</nav>
+	          </div>
+          </div>
+        </div>
+      )
     }
 }
 

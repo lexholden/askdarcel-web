@@ -53,15 +53,12 @@ class EditNotes extends Component {
 
 	render() {
 		return (
-			<div className="edit-notes">
-				<div className="title-container">
-					<label>Notes</label>
-					<i className="material-icons" onClick={this.addNote}>note_add</i>
-				</div>
-				<ul className="edit-section-item">
+			<li className="edit--section--list--item edit--notes">
+				<label>Notes <button className="edit--section--list--item--button" onClick={this.addNote}><i className="material-icons">add_box</i>Add Note</button></label>
+				<ul className="edit--section--list--item--sublist">
 					{this.renderNotes()}
 				</ul>
-			</div>
+			</li>
 		);
 	}
 }
@@ -86,7 +83,7 @@ class EditNote extends Component {
 	render() {
 		return (
 			<li>
-				<label>Note #{this.props.index+1}</label>
+				<label>Note {this.props.index+1}</label>
 				<textarea placeholder='Note' defaultValue={this.props.note.note} onChange={this.handleFieldChange} />
 			</li>
 		);

@@ -21,7 +21,7 @@ class EditAddress extends Component {
 		let address = this.props.address;
 
 		return (
-			<li key="address" className="edit-section-item">
+			<li key="address" className="edit--section--list--item">
 				<label>Address</label>
 				<input type="text" placeholder="Address 1" data-field='address_1' defaultValue={address.address_1} onChange={this.handleAddressChange} />
 				<input type="text" placeholder="Address 2" data-field='address_2' defaultValue={address.address_2} onChange={this.handleAddressChange} />

@@ -8,15 +8,22 @@
   }
 }
 
-input {
+input, textarea {
   @extend %font-size-default;
-  background: $color-white;
-  border: 0;
-  padding: calc-em(6px) calc-em(15px);
-  display: inline-block;
+  padding: calc-em(15px);
+	width: 100%;
+	border: 1px solid #DDDDDD;
+	border-radius: 2px;
+	background-color: #F2F2F2;
+	font-size: calc-em(17px);
+	color: #333333;
   &:active, &:hover, &:focus {
     box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
   }
+}
+
+textarea {
+	resize: vertical !important;
 }
 
 button {
@@ -109,4 +116,25 @@ button, input, textarea {
   height: calc-em(50px);
   background-size: calc-em(20px);
   background-image: url(../assets/img/ic-back-white.png);
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #999999;
+	font-size: calc-em(17px);
+	font-style: italic;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #999999;
+	font-size: calc-em(17px);
+	font-style: italic;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #999999;
+	font-size: calc-em(17px);
+	font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+	color: #999999;
+	font-size: calc-em(17px);
+	font-style: italic;
 }

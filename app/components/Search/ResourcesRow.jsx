@@ -107,16 +107,26 @@ class ResourcesRow extends Component {
 
   render() {
     let categoryId = this.props.categoryId;
+    // If we don't have a category ID then we know a search was performed
+    let isFromSearch = categoryId >= 0 ? false : true;
+
     let services = this.props.resource.services;
     let service = this.props.resource.services[0];
+    let resourceTitle = '';
 
-    services.forEach(item => {
-      item.categories.forEach(category => {
-        if(category.id === categoryId) {
-          service = item;
-        }
-      })
-    });
+    if(isFromSearch) {
+      resourceTitle = this.props.resource.name;
+    } else {
+      services.forEach(item => {
+        item.categories.forEach(category => {
+          if(category.id === categoryId) {
+            service = item;
+          }
+        })
+      });
+
+      resourceTitle = service && service.name;
+    }
 
     let resourceDescription = this.props.resource.long_description ||
           this.props.resource.short_description ||
@@ -131,7 +141,7 @@ class ResourcesRow extends Component {
           <Link to={{ pathname: "resource", query: { id: this.props.resource.id, time: this.state.walkTime } }}>
             <header>
               <div className="entry-details">
-                <h4 className="entry-headline">{this.props.number}. {service && service.name}</h4>
+                <h4 className="entry-headline">{this.props.number}. {resourceTitle}</h4>
                 <div className="entry-subhead">
                   <Rating ratings={this.props.resource.ratings} />
                   <p className="entry-distance">{buildAddressCell(this.props.resource.address)} &bull; {this.state.walkTime || "unknown"} walking</p>
