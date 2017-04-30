@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import editCollectionHOC from './EditCollection';
+import _ from 'lodash';
 
 class EditPhone extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            phone: {}
+            phone: _.clone(this.props.item)
         };
 
         this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -14,7 +15,7 @@ class EditPhone extends Component {
 
     handleFieldChange(e) {
         let value = e.target.value;
-        let field = e.target.field;
+        let field = e.target.dataset.field;
         let phone = this.state.phone;
 
         if(phone[field] || value != this.props.item[field]) {

@@ -11,6 +11,7 @@ import EditPhones from './EditPhones';
 import * as dataService from '../../utils/DataService';
 import { withRouter } from 'react-router';
 import { daysOfTheWeek } from '../../utils/index';
+import _ from 'lodash';
 
 class EditSections extends React.Component {
 
@@ -25,7 +26,7 @@ class EditSections extends React.Component {
             addressFields: {},
             services: {},
             notes: {},
-            phones: {},
+            phones: [],
             submitting: false
         };
 
@@ -59,7 +60,11 @@ class EditSections extends React.Component {
 	    let url = '/api/resources/' + resourceID;
 	    fetch(url).then(r => r.json())
 	    .then(data => {
-	      	this.setState({resource: data.resource});
+	      	this.setState({
+                  resource: data.resource,
+                  originalResource: data.resource
+            });
+
             let scheduleMap = {};
             data.resource.schedule.schedule_days.forEach(function(day) {
                 scheduleMap[day.day] = day;
@@ -101,18 +106,8 @@ class EditSections extends React.Component {
             promises.push(dataService.post('/api/resources/' + resource.id + '/change_requests', {change_request: resourceChangeRequest}));
         }
 
-        //Phone
-        let phoneChangeRequests = {};
-        if(this.state.phone) {
-            for(let key in this.state.phone) {
-                if(this.state.phone.hasOwnProperty(key) &&
-                this.state.phone[key].number !== resource.phones[0].number) {
-                    phoneChangeRequests[key] = {number: this.state.phone[key].number};
-                }
-            }
-        }
         //Fire off phone requests
-        this.postObject(phoneChangeRequests, 'phones', promises);
+        this.postCollection(this.state.phones, this.state.resource.phones, 'phones', promises);
 
         //schedule
         this.postObject(this.state.scheduleObj, 'schedule_days', promises);
@@ -137,6 +132,47 @@ class EditSections extends React.Component {
             console.log(err);
         });
 
+    }
+
+    postCollection(collection, originalCollection, path, promises) {
+        for(let i = 0; i < collection.length; i++) {
+            let item = collection[i];
+
+            if(i < originalCollection.length && item.dirty) {
+                let diffObj = this.getDiffObject(item, originalCollection[i]);
+                if(diffObj.numKeys > 0) {
+                    delete diffObj.obj.dirty;
+                    this.updateCollectionObject(diffObj.obj, item.id, path, promises);
+                }
+            } else if(item.dirty) {
+                //post a new object
+            }
+        }
+    }
+
+    getDiffObject(curr, orig) {
+        let diffObj = {
+            obj: {},
+            numKeys: 0
+        };
+
+        for(let key in curr) {
+            if(!_.isEqual(curr[key], orig[key])) {
+                diffObj.obj[key] = curr[key];
+                diffObj.numKeys++;
+            }
+        }
+
+        return diffObj;
+    }
+
+    updateCollectionObject(object, id, path, promises) {
+        promises.push(
+            dataService.post(
+                '/api/' + path + '/' + id + '/change_requests', 
+                {change_request: object}
+            )
+        );
     }
 
     postObject(object, path, promises) {
@@ -254,14 +290,8 @@ class EditSections extends React.Component {
         }
     }
 
-    handlePhoneChange(e) {
-        // let phone = this.state.resource.phones[0];
-        // let key = e.target.dataset.id;
-        // if(phone) {
-        //     phone[key] = {number: e.target.value};
-        //     this.setState({phone: phone});
-        // }
-        console.log(e);
+    handlePhoneChange(phoneCollection) {
+        this.setState({phones: phoneCollection});
     }
 
     handleResourceFieldChange(e) {
