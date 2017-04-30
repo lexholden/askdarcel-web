@@ -2,6 +2,9 @@ import React from 'react';
 import * as dataService from '../../utils/DataService';
 import * as ChangeRequestTypes from './ChangeRequestTypes';
 import Actions from './Actions';
+import TextareaAutosize from 'react-autosize-textarea';
+
+
 
 class ChangeRequest extends React.Component {
   constructor(props) {
@@ -85,15 +88,15 @@ class ChangeRequest extends React.Component {
     for (let field in changeRequestFields) {
       changedFields.push(
         <div key={field} className="request-fields">
-									<div className="request-entry">
-											<p className="request-cell name existing">{field}</p>
-											<p className="request-cell value existing">{existingRecord[field]}</p>
-									</div>
-									<div className="request-entry">
-											<p className="request-cell name">{field}</p>
-											<textarea value={changeRequestFields[field]} onChange={(e) => this.changeFieldValue(field, e.target.value)} className="request-cell value" />
-									</div>
-							</div>
+					<div className="request-entry">
+						<p className="request-cell name existing">{field}</p>
+						<p className="request-cell value existing">{existingRecord[field]}</p>
+					</div>
+					<div className="request-entry">
+						<p className="request-cell name">{field}</p>
+						<TextareaAutosize value={changeRequestFields[field]} onChange={(e) => this.changeFieldValue(field, e.target.value)} className="request-cell value" />
+					</div>
+				</div>
       );
     }
 
