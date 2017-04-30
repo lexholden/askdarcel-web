@@ -318,7 +318,7 @@ class EditSections extends React.Component {
 
             <li key="long_description" className="edit--section--list--item">
                 <label>Description</label>
-                <textarea defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
+                <textarea className="" defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
             </li>
 
             <EditSchedule schedule={this.state.resource.schedule} handleScheduleChange={this.handleScheduleChange} />
