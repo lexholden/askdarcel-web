@@ -68,7 +68,7 @@ class Admin extends React.Component {
                 break;
         }
 
-        dataService.post(requestString, getAuthRequestHeaders(),null , changeRequestFields)
+        dataService.post(requestString, getAuthRequestHeaders(), changeRequestFields)
             .then((response) => {
                 if(response.ok) {
                     removalFunc(id);
