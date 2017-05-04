@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import Gmap from './ResourcesMap.js';
 import queryString from 'query-string';
 import ResourcesList from './ResourcesList'
+import { timeToString, stringToTime, daysOfTheWeek } from '../../utils/index';
 
 // Show the span of results (11 - 20 for example rather than the #10)
 // Make the map update with proper markers
@@ -288,33 +289,6 @@ function openHours(scheduleDays) {
   }
 
   return hours;
-}
-
-function timeToString(hours) {
-  let hoursString = "";
-  if(hours < 12) {
-    hoursString += hours + "am";
-  } else {
-    if(hours > 12) {
-      hours -= 12;
-    }
-
-    hoursString += hours + "pm";
-  }
-
-  return hoursString;
-}
-
-function daysOfTheWeek() {
-  return [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
 }
 
 export default ResourcesTable;

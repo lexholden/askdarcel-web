@@ -61,15 +61,12 @@ class EditServices extends Component {
 
 	render() {
 		return (
-			<div>
-				<div className="title-container">
-					<label>Services</label>
-					<i className="material-icons" onClick={this.addService}>note_add</i>
-				</div>
-				<ul className="edit-section-item">
+			<li className="edit--section--list--item">
+			<button className="edit--section--list--item--button" onClick={this.addService}><i className="material-icons">add_box</i>Add Service</button>
+				<ul className="edit--section--list--item--sublist edit--service--list">
 					{this.renderServices()}
 				</ul>
-			</div>
+			</li>
 		);
 	}
 }
@@ -108,16 +105,46 @@ class EditService extends Component {
 
 	render() {
 		return (
-			<li className="edit-service">
-				<label>Service #{this.props.index+1}</label>
-				<input placeholder='Name' data-field='name' defaultValue={this.props.service.name} onChange={this.handleFieldChange} />
-				<textarea placeholder='Description' data-field='long_description' defaultValue={this.props.service.long_description} onChange={this.handleFieldChange} />
-				<textarea placeholder='Eligibility' data-field='eligibility' defaultValue={this.props.service.eligibility} onChange={this.handleFieldChange} />
-				<textarea placeholder='Application Process' data-field='application_process' defaultValue={this.props.service.application_process} onChange={this.handleFieldChange} />
-				<input placeholder='Fee' data-field='fee' defaultValue={this.props.service.fee} onChange={this.handleFieldChange} />
-				<textarea placeholder='Required Documents' data-field='required_documents' defaultValue={this.props.service.required_documents} onChange={this.handleFieldChange} />
-				<EditNotes notes={this.props.service.notes} handleNotesChange={this.handleNotesChange} />
-				<EditSchedule schedule={this.props.service.schedule} handleScheduleChange={this.handleScheduleChange} />
+			<li className="edit--service edit--section">
+				<header className="edit--section--header">
+      		<h4>Service {this.props.index+1}: {this.props.service.name}</h4>
+      	</header>
+
+				<ul className="edit--section--list">
+					<li className="edit--section--list--item">
+						<label>Service name</label>
+						<input placeholder='Name' data-field='name' defaultValue={this.props.service.name} onChange={this.handleFieldChange} />
+					</li>
+
+					<li className="edit--section--list--item">
+						<label>Service description</label>
+						<textarea placeholder='Description' data-field='long_description' defaultValue={this.props.service.long_description} onChange={this.handleFieldChange} />
+					</li>
+
+					<li className="edit--section--list--item">
+						<label>How do you apply for this service</label>
+					<textarea placeholder='Application Process' data-field='application_process' defaultValue={this.props.service.application_process} onChange={this.handleFieldChange} />
+					</li>
+
+					<li className="edit--section--list--item">
+						<label>Who is eligible for this service</label>
+						<textarea placeholder='Eligibility' data-field='eligibility' defaultValue={this.props.service.eligibility} onChange={this.handleFieldChange} />
+					</li>
+
+					<li className="edit--section--list--item">
+						<label>How much does this service cost</label>
+						<input placeholder='Fee' data-field='fee' defaultValue={this.props.service.fee} onChange={this.handleFieldChange} />
+					</li>
+
+					<li className="edit--section--list--item">
+						<label>What documents do you need to bring to apply</label>
+						<textarea placeholder='Required Documents' data-field='required_documents' defaultValue={this.props.service.required_documents} onChange={this.handleFieldChange} />
+					</li>
+
+					<EditSchedule schedule={this.props.service.schedule} handleScheduleChange={this.handleScheduleChange} />
+
+					<EditNotes notes={this.props.service.notes} handleNotesChange={this.handleNotesChange} />
+				</ul>
 			</li>
 		);
 	}

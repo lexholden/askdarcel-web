@@ -1,126 +1,231 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 // ADD/EDIT PAGE
-.edit-section-title
-.edit-page {
-    width: 100%;
-    overflow: hidden;
-    margin-top: #{$navigation-height};
-}
-.edit-header {
-  @extend %flex-row;
-  @extend %bg-image;
-  justify-content: space-between;
-  background-image: url(../assets/img/bg.png);
-  background-size: cover;
-  height: 10vh;
-  height: calc-em(80px);
-  padding: 0 calc-em(10px);
-  @include r_max($break-tablet-s) {
-    height: calc-em(60px);
-  }
 
-  .back-btn {
-    opacity: 0;
-    flex: 0 0 auto;
-  }
+.edit {
+	width:100%;
+  max-width: calc-em(1000px);
+  padding: 0 calc-em(20px);
+  margin: 0 auto;
+  display: flex;
 }
 
-.edit-title {
-  @extend %font-size-medium;
-  color: $color-white;
-  flex: 1 1 auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  margin: 0 calc-em(10px);
+////////////////////////////////////////////////////////////////////////////////////////
+// EDIT MAIN
+
+.edit--main {
+	width: calc-em(660px);
+	border-right: 1px solid #ddd;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	align-content: stretch;
 }
 
-.edit-submit-btn {
-  flex: 0 0 auto;
-  text-transform: uppercase;
-  font-weight: 900;
-  color: $color-white;
-  letter-spacing: 0.5px;
-  padding: calc-em(14px) calc-em(15px);
+.edit--main--header {
+  position: fixed;
+  background: #fff;
+  padding: calc-em(35px) calc-em(30px) calc-em(30px) 0;
+  width: 100%;
+  max-width: calc-em(659px);
+  z-index: 999;
+  &--title {
+		color: #333333;
+		font-size: calc-em(30px);
+		font-weight: bold;
+		line-height: calc-em(36px);
+		white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
+// EDIT ASIDE
+
+.edit--aside {
+	max-height: 100vh;
+	padding: calc-em(30px) 0 0 calc-em(30px);
+	width: 100%;
+	max-width: calc-em(240px);
+	&--content {
+		position: fixed;
+		width: 100%;
+		max-width: calc-em(240px);
+		&--submit {
+			color: #FFFFFF;
+			font-size: 17px;
+			font-weight: bold;
+			padding: calc-em(9px) calc-em(25px);
+			background: #1C72E6;
+			border-radius: 8px;
+		}
+		&--nav {
+			margin: calc-em(30px) 0;
+			ul {
+				list-style-type: none;
+				li {
+					width: 100%;
+					white-space: nowrap;
+				  overflow: hidden;
+				  text-overflow: ellipsis;
+				  margin-bottom: calc-em(10px);
+				  &:last-of-type {
+				  	margin-bottom: 0;
+				  }
+
+				  a {
+				  	color: #333333;
+				  	&:hover {
+				  		color: #1C72E6;
+				  	}
+				  }
+				}
+			}
+		}
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // EDIT SECTION FORMS
 
-.edit-section {
-  @extend %base-max-width;
-  border-bottom: 1px solid $color-grey3;
-  padding: calc-em(30px) 0;
-  &:last-of-type {
-    border-bottom: 0;
+.edit--sections {
+	padding-top: calc-em(100px);
+}
+
+.edit--section {
+  margin-bottom: calc-em(60px);
+  &--header {
+  	border-bottom: 1px solid #DDDDDD;
+  	margin-bottom: calc-em(20px);
+  	h4 {
+  		display: inline-block;
+			color: #1C72E6;
+			font-size: calc-em(19px);
+			font-weight: bold;
+			padding-bottom: calc-em(10px);
+			border-bottom: 3px solid #1C72E6;
+		}
   }
 }
-.title-container {
-    display: flex;
 
-    .material-icons {
-        line-height: calc-em(38px);
-        cursor: pointer;
-        width: calc-em(24px);
-    }
+.edit--section--list {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+
+	&--item {
+		margin: 0 calc-em(30px) calc-em(20px) 0;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+
+		label {
+			color: #888888;
+			font-size: calc-em(19px);
+			font-weight: bold;
+			margin-bottom: calc-em(15px);
+			display: block;
+			button {
+				margin-left: calc-em(10px);
+				height: calc-em(38px);
+				font-size: calc-em(15px);
+				i {
+					height: calc-em(18px);
+					width: calc-em(18px);
+					font-size: 18px;
+					top: -1px;
+				}
+			}
+		}
+
+		input, textarea {
+			padding: calc-em(15px);
+			width: 100%;
+			border: 1px solid #DDDDDD;
+			border-radius: 2px;
+			background-color: #F2F2F2;
+			font-size: calc-em(17px);
+			color: #333333;
+			margin-bottom: calc-em(10px);
+		}
+
+		button {
+			border-radius: 8px;
+			background-color: #AAAAAA;
+			color: #ffffff;
+			padding: calc-em(10px) calc-em(12px);
+			cursor: pointer;
+			font-size: calc-em(17px);
+			font-weight: 600;
+			&:hover {
+				background-color: darken(#AAAAAA, 20%);
+			}
+
+			i {
+				margin-right: calc-em(8px);
+			}
+		}
+
+		&--sublist .edit--section--list--item {
+			margin-right: 0;
+		}
+	}
 }
 
-.edit-section-list {
-    label {
-        @extend %font-size-large;
-        display: block;
-        margin: 0 calc-em(5px) calc-em(3px) 0;
-    }
-}
-
-.edit-section-item {
-    margin-left: calc-em(20px);
-    label {
-        @extend %font-size-small;
-        display: block;
-        padding: 0 calc-em(20px);
-        margin-bottom: calc-em(10px);
-    }
-
-    input, textarea {
-        @extend %font-size-default;
-        background: $color-grey0;
-        display: block;
-        width: 98%;
-        padding: calc-em(12px) calc-em(20px);
-        border: 0;
-        margin-bottom: calc-em(20px);
-        margin-left: calc-em(10px);
-        margin-right: calc-em(10px);
-    }
-}
-
-.edit-service {
-    border: 1px dotted black;
-    margin-bottom: calc-em(5px);
-
-    .edit-notes {
-        margin-left: calc-em(20px);
-    }
-}
+////////////////////////////////////////////////////////////////////////////////////////
+// EDIT HOURS
 
 .edit-hours-list {
   li {
     @extend %flex-row;
-    @include r_max($break-tablet-s) {
-      padding: 0 calc-em(20px);
+    align-items: center;
+    margin-bottom: calc-em(10px);
+    &:last-of-type {
+    	margin-bottom: 0;
     }
-
     p {
       flex: 0 0 auto;
       width: calc-em(36px);
     }
     input {
       flex: 1 1 auto;
+      margin: 0;
+      cursor: text;
       &:first-of-type {
         margin-right: calc-em(10px);
       }
     }
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+// EDIT NOTES
+
+.edit--notes {
+	ul li {
+		display: flex;
+		margin-bottom: calc-em(10px);
+		label {
+			width: calc-em(150px);
+			color: #333333;
+			font-size: calc-em(17px);
+			font-weight: bold;
+			padding-top: calc-em(15px);
+		}
+		textarea {
+			height: calc-em(53px);
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+// EDIT SERVICES
+
+.edit--service {
+	display: flex;
+	flex-direction: column;
+	margin-top: calc-em(60px);
 }

@@ -59,8 +59,8 @@ class EditSchedule extends Component {
 
     render() {
         return (
-            <div key="hours" className="edit-section-item hours">
-                <label>Hours of Operation</label>
+            <li key="hours" className="edit--section--list--item hours">
+                <label>Hours</label>
                 <ul className="edit-hours-list">
                     <li>
                         <p>M</p>
@@ -98,7 +98,7 @@ class EditSchedule extends Component {
                         <input type="time" defaultValue={this.getDayHours("Sunday", "closes_at")} data-key="Sunday" data-field="closes_at" onChange={this.handleScheduleChange}/>
                     </li>
                 </ul>
-            </div>
+            </li>
         );
     }
 }
