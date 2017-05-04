@@ -316,6 +316,11 @@ class EditSections extends React.Component {
                 <input type="url" defaultValue={resource.website} data-field='website' onChange={this.handleResourceFieldChange}/>
             </li>
 
+            <li key="email" className="edit--section--list--item email">
+                <label>E-Mail</label>
+                <input type="url" defaultValue={resource.email} data-field='email' onChange={this.handleResourceFieldChange}/>
+            </li>
+
             <li key="long_description" className="edit--section--list--item">
                 <label>Description</label>
                 <textarea defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
