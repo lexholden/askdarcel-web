@@ -92,6 +92,10 @@ class EditSections extends React.Component {
             resourceChangeRequest.name = this.state.name;
             resourceModified = true;
         }
+        if(this.state.email && this.state.email !== resource.email) {
+            resourceChangeRequest.email = this.state.email;
+            resourceModified = true;
+        }
         //fire off resource request
         if(resourceModified) {
             promises.push(dataService.post('/api/resources/' + resource.id + '/change_requests', {change_request: resourceChangeRequest}));
