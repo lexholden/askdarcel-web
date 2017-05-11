@@ -4,13 +4,15 @@ class ProposedService extends React.component {
   constructor(props) {
     super(props);
   
-    this.state = { schedule: {}, service: { notes: {}, schedules: {}, } };
+    this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
 
   }
 
   componentDidMount() {
     let tempService = this.props.service;
-    let newService = this.state.service;
+    let newServiceFields = this.state.serviceFields;
+    let tempNotes = this.state.notes;
+    let tempSchedule = this.state.schedule;
 
     for(let field in service) {
       if(service.hasOwnProperty(field) && field !== 'id' && field !== 'resource') {
@@ -18,23 +20,24 @@ class ProposedService extends React.component {
           let notes = service[field];
           let tempNoteObj = {};
           notes.forEach((curr, i) => {
-            newService.notes[i] = curr.note;
+            tempNotes[i] = curr.note;
           });
         }
         else if (field === "schedule") {
           let schedule = service[field];
           let scheduleDays = schedule.schedule_days;
           scheduleDays.forEach((day, i) => {
-            newService.schedules[i] = { day: day.day, opens_at: date.opens_at, closes_at: date.closes_at }
+            tempSchedule[i] = { day: day.day, opens_at: date.opens_at, closes_at: date.closes_at }
           })
         }
         else {
-          newService[field] = service[field];
+          newServiceFields[field] = service[field];
         }
       }
     }
+    this.setState({ serviceFields: newServiceFields, notes: tempNotes, schedule: tempSchedule });
   }
-  
+
   render() {
     return (
       <div className="change-log">
