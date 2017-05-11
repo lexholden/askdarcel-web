@@ -1,11 +1,11 @@
 import React from 'react';
 
-class ProposedService extends React.component {
+class ProposedService extends React.Component {
   constructor(props) {
     super(props);
-  
-    this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
 
+    this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
+    this.renderProposedServiceFields = this.renderProposedServiceFields.bind(this);
   }
 
   componentDidMount() {
@@ -14,103 +14,72 @@ class ProposedService extends React.component {
     let tempNotes = this.state.notes;
     let tempSchedule = this.state.schedule;
 
-    for(let field in service) {
-      if(service.hasOwnProperty(field) && field !== 'id' && field !== 'resource') {
-        if(field === "notes") {
-          let notes = service[field];
+    for (let field in tempService) {
+      if (tempService.hasOwnProperty(field) && field !== 'id' && field !== 'resource') {
+        if (field === "notes") {
+          let notes = tempService[field];
           let tempNoteObj = {};
           notes.forEach((curr, i) => {
             tempNotes[i] = curr.note;
           });
-        }
-        else if (field === "schedule") {
-          let schedule = service[field];
+        } else if (field === "schedule") {
+          let schedule = tempService[field];
           let scheduleDays = schedule.schedule_days;
           scheduleDays.forEach((day, i) => {
-            tempSchedule[i] = { day: day.day, opens_at: date.opens_at, closes_at: date.closes_at }
+            tempSchedule[i] = { day: day.day, opens_at: day.opens_at, closes_at: day.closes_at }
           })
-        }
-        else {
-          newServiceFields[field] = service[field];
+        } else {
+          newServiceFields[field] = tempService[field];
         }
       }
     }
     this.setState({ serviceFields: newServiceFields, notes: tempNotes, schedule: tempSchedule });
   }
 
+  renderProposedServiceFields(serviceFields, notes, schedule) {
+    let jsx = [];
+    for(let note in notes) {
+      jsx.push(this.tableEntry("note" + note, "note", notes[note], note));
+    }
+
+    for(let day in schedule) {
+      jsx.push(
+        this.tableEntry(
+          "sched" + schedule[day].day,
+          "Schedule (" + schedule[day].day + ")",
+          "Opens at: " + schedule[day].opens_at + ", Closes at: " + schedule[day].closes_at, 
+          day
+        )
+      );
+    }
+
+    for(let field in serviceFields) {
+      jsx.push(this.tableEntry(field, field, service[field]));
+    }
+    return jsx;
+  }
+
+
+  tableEntry(key, fieldName, value, index) {
+    return (
+      <div key={key} className="request-entry">
+        <p className="request-cell name">{fieldName}</p>
+        <p className="request-cell value">{value}</p>
+      </div>
+    );
+  }
+
   render() {
+    let { notes, schedule, servicFields } = this.state;
     return (
       <div className="change-log">
-          {renderProposedService(props.service)}
+        <div className="request-fields">
+          {this.renderProposedServiceFields(servicFields, notes, schedule)}
+        </div>
       </div>
     );
   }
 }
 
-function renderProposedService(service) {
-    return (
-        <div className="request-fields">
-            {renderProposedServiceFields(service)}
-        </div>
-    );
-}
-
-function renderProposedServiceFields(service) {
-    console.log(service);
-    let jsx = [];
-
-    for(let field in service) {
-        if(service.hasOwnProperty(field) && field !== 'id' && field !== 'resource') {
-            if(field === "notes") {
-                let notes = service[field];
-                let tempNoteObj = {};
-                notes.forEach((note, i) => {
-                  tempNoteObj[i] = note.note;
-                    // jsx.push(tableEntry("note"+noteCount++, "note", note.note));
-                });
-            }
-            else if (field === "schedule") {
-                let schedule = service[field];
-                let scheduleDays = schedule.schedule_days;
-                scheduleDays.forEach((day) => {
-                    jsx.push(
-                        tableEntry(
-                            "sched"+day.day,
-                            "Schedule ("+day.day+")",
-                            "Opens at: "+day.opens_at+", Closes at: "+day.closes_at
-                        )
-                    );
-                })
-            }
-            else {
-                jsx.push(tableEntry(field, field, service[field]));
-            }
-        }
-    }
-
-    return jsx;
-}
-// function renderProposedServiceFields(service) {
-//     let jsx = [];
-//     for(let field in service) {
-//         if(service.hasOwnProperty(field) && field !== 'id' && field) {
-//             if(field !== 'notes' && field !== 'schedule')
-//                 jsx.push(
-//                     tableEntry(field, field, service[field])
-//                 );
-//         }
-//     }
-//
-//     return jsx;
-// }
-
-function tableEntry(key, fieldName, value) {
-    return (
-        <div key={key} className="request-entry">
-            <p className="request-cell name">{fieldName}</p>
-            <p className="request-cell value">{value}</p>
-        </div>
-    );
-}
 
 export default ProposedService;
