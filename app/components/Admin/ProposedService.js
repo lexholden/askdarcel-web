@@ -1,11 +1,47 @@
 import React from 'react';
 
-var ProposedService = (props) => {
+class ProposedService extends React.component {
+  constructor(props) {
+    super(props);
+  
+    this.state = { schedule: {}, service: { notes: {}, schedules: {}, } };
+
+  }
+
+  componentDidMount() {
+    let tempService = this.props.service;
+    let newService = this.state.service;
+
+    for(let field in service) {
+      if(service.hasOwnProperty(field) && field !== 'id' && field !== 'resource') {
+        if(field === "notes") {
+          let notes = service[field];
+          let tempNoteObj = {};
+          notes.forEach((curr, i) => {
+            newService.notes[i] = curr.note;
+          });
+        }
+        else if (field === "schedule") {
+          let schedule = service[field];
+          let scheduleDays = schedule.schedule_days;
+          scheduleDays.forEach((day, i) => {
+            newService.schedules[i] = { day: day.day, opens_at: date.opens_at, closes_at: date.closes_at }
+          })
+        }
+        else {
+          newService[field] = service[field];
+        }
+      }
+    }
+  }
+  
+  render() {
     return (
-        <div className="change-log">
-            {renderProposedService(props.service)}
-        </div>
+      <div className="change-log">
+          {renderProposedService(props.service)}
+      </div>
     );
+  }
 }
 
 function renderProposedService(service) {
@@ -19,13 +55,15 @@ function renderProposedService(service) {
 function renderProposedServiceFields(service) {
     console.log(service);
     let jsx = [];
+
     for(let field in service) {
         if(service.hasOwnProperty(field) && field !== 'id' && field !== 'resource') {
             if(field === "notes") {
                 let notes = service[field];
-                let noteCount = 0;
-                notes.forEach((note) => {
-                    jsx.push(tableEntry("note"+noteCount++, "note", note.note));
+                let tempNoteObj = {};
+                notes.forEach((note, i) => {
+                  tempNoteObj[i] = note.note;
+                    // jsx.push(tableEntry("note"+noteCount++, "note", note.note));
                 });
             }
             else if (field === "schedule") {
