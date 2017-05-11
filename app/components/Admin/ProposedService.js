@@ -1,4 +1,5 @@
 import React from 'react';
+import TextareaAutosize from 'react-autosize-textarea';
 
 class ProposedService extends React.Component {
   constructor(props) {
@@ -6,6 +7,7 @@ class ProposedService extends React.Component {
 
     this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
     this.renderProposedServiceFields = this.renderProposedServiceFields.bind(this);
+    this.changeFieldValue = this.changeFieldValue.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +50,7 @@ class ProposedService extends React.Component {
           "sched" + schedule[day].day,
           "Schedule (" + schedule[day].day + ")",
           "Opens at: " + schedule[day].opens_at + ", Closes at: " + schedule[day].closes_at, 
-          day
+          day, "schedule"
         )
       );
     }
@@ -59,15 +61,26 @@ class ProposedService extends React.Component {
     return jsx;
   }
 
-
-  tableEntry(key, fieldName, value, index) {
-    return (
-      <div key={key} className="request-entry">
-        <p className="request-cell name">{fieldName}</p>
-        <p className="request-cell value">{value}</p>
-      </div>
-    );
+  changeFieldValue(fieldName, value, index) {
+    // if(fieldName === "notes") {
+    //   let tempNotes = this.state.notes;
+    //   tempNotes[index] = value;
+    //   this.setState({ notes: tempNotes });
+    // }
   }
+
+  // tableEntry(key, fieldName, value, index, type) {
+  //   return (
+  //     <div key={key} className="request-entry">
+  //       <p className="request-cell name">{fieldName}</p>
+  //       <TextareaAutosize className="request-cell value" value={this.state[fieldName][index]} onChange={(e) => this.changeFieldValue(fieldName, e.target.value, index)} />
+  //     </div>
+  //   );
+  // }
+
+  scheduleEntry() {}
+  noteEntry() {}
+  serviceFieldEntry() {}
 
   render() {
     let { notes, schedule, servicFields } = this.state;
