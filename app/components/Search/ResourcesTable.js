@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Gmap from './ResourcesMap.js';
+import Loader from '../Loader';
+
 import queryString from 'query-string';
 import ResourcesList from './ResourcesList'
 import { timeToString, stringToTime, daysOfTheWeek } from '../../utils/index';
@@ -139,22 +141,8 @@ class ResourcesTable extends Component {
   }
 
   render() {
-    return !this.state.resources ? <div className="loader">
-      <div className="sk-fading-circle">
-        <div className="sk-circle1 sk-circle"></div>
-        <div className="sk-circle2 sk-circle"></div>
-        <div className="sk-circle3 sk-circle"></div>
-        <div className="sk-circle4 sk-circle"></div>
-        <div className="sk-circle5 sk-circle"></div>
-        <div className="sk-circle6 sk-circle"></div>
-        <div className="sk-circle7 sk-circle"></div>
-        <div className="sk-circle8 sk-circle"></div>
-        <div className="sk-circle9 sk-circle"></div>
-        <div className="sk-circle10 sk-circle"></div>
-        <div className="sk-circle11 sk-circle"></div>
-        <div className="sk-circle12 sk-circle"></div>
-      </div>
-    </div> : (<div className="results">
+    return (!this.state.resources ? <Loader /> :
+              <div className="results">
                 <div className="results-table">
                   <header>
                     <h1 className="results-title">{this.state.categoryName}</h1>

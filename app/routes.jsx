@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link, browserHistory, IndexRoute } from 'react-router';
+import { Route, Link, browserHistory, IndexRoute, withRouter } from 'react-router';
 
 import configureStore from './store/configureStore';
 import App from './components/App';
@@ -23,8 +23,19 @@ function redirectToRoot (nextState, replace) {
 };
 
 
+// Adapted from
+// https://github.com/ReactTraining/react-router/issues/2019#issuecomment-256591800
+// Note: When we upgrade to react-router 4.x, we should use
+// https://github.com/ReactTraining/react-router/blob/v4.1.1/packages/react-router-dom/docs/guides/scroll-restoration.md
+function scrollToTop(prevState, nextState) {
+  if (nextState.location.action !== "POP") {
+    window.scrollTo(0, 0);
+  }
+}
+
+
 export default (
-  <Route path="/" component={ App } >
+  <Route path="/" component={ App } onChange={ scrollToTop } >
     <IndexRoute component={ CategoryPage } />
     <Route name="resources" path="/resources" component={ ResourcesTable } />
     <Route name="editResource" path="/resource/edit" component={ EditSections } />

@@ -76,7 +76,9 @@ class Gmap extends Component {
 
   render() {
     return (
-      <div ref="map_canvas" className="map_canvas"></div>
+      <div className="results-map-inner">
+        <div ref="map_canvas" className="map_canvas"></div>
+      </div>
     )
   }
 }

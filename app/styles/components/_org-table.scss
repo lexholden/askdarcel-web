@@ -4,13 +4,11 @@
 .results {
   @extend %flex-row;
   width: 100%;
-  height: calc(100vh - #{$navigation-height});
-  overflow: hidden;
   margin-top: #{$navigation-height};
+  align-items: flex-start;
   @include r_max($break-tablet-s) {
     margin-top: 0;
     flex-direction: column;
-    align-items: stretch;
     margin-bottom: #{$navigation-height};
   }
 }
@@ -24,6 +22,11 @@
     height: calc-em(180px);
     width: 100%;
   }
+}
+
+.results-map-inner {
+  position: fixed;
+  width: 100%;
 }
 
 .results-table {
@@ -81,7 +84,6 @@
 }
 
 .results-table-body {
-  overflow-y: scroll;
   flex: 1 1 auto;
 }
 
