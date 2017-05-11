@@ -1,15 +1,29 @@
 import React from 'react';
 import * as dataService from '../../utils/DataService';
+import * as ChangeRequestTypes from './ChangeRequestTypes';
+import Actions from './Actions';
+import TextareaAutosize from 'react-autosize-textarea';
+
+
 
 class ChangeRequest extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { existingRecord: {} };
+    this.state = { existingRecord: {}, changeRequestFields: {} };
     this.renderChangeRequest = this.renderChangeRequest.bind(this);
+    this.changeFieldValue = this.changeFieldValue.bind(this);
   }
 
   componentDidMount() {
     this.retrieveModifiedObject();
+    let fields = this.props.changeRequest.field_changes;
+    let tempChangeRequestFields = {};
+    fields.forEach(field => {
+      tempChangeRequestFields[field.field_name] = field.field_value;
+    });
+
+    this.setState({ changeRequestFields: tempChangeRequestFields });
+
   }
 
   retrieveModifiedObject() {
@@ -18,7 +32,6 @@ class ChangeRequest extends React.Component {
     //"ChangeRequest" is 13 characters, so this will give us the first part of the string
     let objectType = changeRequest.type;
     let object = {};
-
     switch (objectType) {
       case 'ResourceChangeRequest':
         object = resource;
@@ -44,7 +57,6 @@ class ChangeRequest extends React.Component {
         }
         break;
     }
-
     this.setState({ existingRecord: object });
   }
 
@@ -60,27 +72,32 @@ class ChangeRequest extends React.Component {
     }
   }
 
+  changeFieldValue(key, value) {
+    let tempChangeRequestFields = this.state.changeRequestFields;
+    tempChangeRequestFields[key] = value;
+    this.setState({ changeRequestFields: tempChangeRequestFields });
+  }
+
   renderChangeRequest() {
     let changedFields = [];
     let existingRecord = this.state.existingRecord;
+    let changeRequestFields = this.state.changeRequestFields;
 
-    this.props.changeRequest.field_changes.forEach((fieldChange) => {
-      let fieldName = fieldChange.field_name;
-      let fieldValue = fieldChange.field_value;
-
+    for (let field in changeRequestFields) {
       changedFields.push(
-        <div key={fieldName} className="request-fields">
-                    <div className="request-entry">
-                        <p className="request-cell name existing">{fieldName}</p>
-                        <p className="request-cell value existing">{existingRecord[fieldName]}</p>
-                    </div>
-                    <div className="request-entry">
-                        <p className="request-cell name">{fieldName}</p>
-                        <p className="request-cell value">{fieldValue}</p>
-                    </div>
-                </div>
+        <div key={field} className="request-fields">
+					<div className="request-entry">
+						<p className="request-cell name existing">{field}</p>
+						<p className="request-cell value existing">{existingRecord[field]}</p>
+					</div>
+					<div className="request-entry">
+						<p className="request-cell name">{field}</p>
+						<TextareaAutosize value={changeRequestFields[field]} onChange={(e) => this.changeFieldValue(field, e.target.value)} className="request-cell value" />
+					</div>
+				</div>
       );
-    });
+    }
+
 
     return changedFields;
   }
@@ -88,10 +105,18 @@ class ChangeRequest extends React.Component {
   render() {
     return (
       <div className="change-log">
-                {this.renderChangeRequest(this.props.changeRequest)}
-            </div>
+				{this.renderChangeRequest(this.props.changeRequest)}
+				<Actions
+						id={this.props.changeRequest.id}
+						changeRequestFields={this.state.changeRequestFields}
+						actionHandler={this.props.actionHandler}
+						approveAction={ChangeRequestTypes.APPROVE}
+						rejectAction={ChangeRequestTypes.DELETE}
+				/>
+			</div>
     );
   }
 }
+
 
 export default ChangeRequest;
