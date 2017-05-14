@@ -8,6 +8,12 @@ class ProposedService extends React.Component {
     this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
     this.renderProposedServiceFields = this.renderProposedServiceFields.bind(this);
     this.changeFieldValue = this.changeFieldValue.bind(this);
+    this.renderNotesFields = this.renderNotesFields.bind(this);
+    this.renderScheduleFields = this.renderScheduleFields.bind(this);
+    this.renderAdditionalFields = this.renderAdditionalFields.bind(this);
+    this.changeScheduleValue = this.changeScheduleValue.bind(this);
+    this.changeNoteValue = this.changeNoteValue.bind(this);
+    this.changeServiceValue = this.changeServiceValue.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +56,7 @@ class ProposedService extends React.Component {
           "sched" + schedule[day].day,
           "Schedule (" + schedule[day].day + ")",
           "Opens at: " + schedule[day].opens_at + ", Closes at: " + schedule[day].closes_at, 
-          day, "schedule"
+          day
         )
       );
     }
@@ -78,16 +84,78 @@ class ProposedService extends React.Component {
   //   );
   // }
 
-  scheduleEntry() {}
-  noteEntry() {}
-  serviceFieldEntry() {}
+  changeScheduleValue(day, value, time) {
+    let { schedule } = this.state;
+    let tempSchedule = {};
+    if(time == 'open') {
+      tempSchedule = Object.assign({}, schedule, {[day]: Object.assign({}, schedule[day], { opens_at: value } )});  
+    } else {
+      tempSchedule = Object.assign({}, schedule, {[day]: Object.assign({}, schedule[day], { closes_at: value } )});  
+    }
+    debugger;
+    this.setState({ schedule: tempSchedule });
+  }
+
+  changeNoteValue(note, value) {
+    let tempNotes = Object.assign({}, this.state.notes, { [note]: value });
+    this.setState({ notes: tempNotes });
+  }
+
+  changeServiceValue(serviceField, value) {
+    let tempServiceFields = Object.assign({}, this.state.serviceFields, { [serviceField]: value });
+    this.setState({ serviceFields: tempServiceFields });
+  }
+  renderScheduleFields() {
+    let { schedule } = this.state;
+    let scheduleOutput = [];
+    for(let day in schedule) {
+      scheduleOutput.push(
+        <div key={"sched" + day} className="request-entry">
+          <p className="request-cell name">{ "Opens at (" + schedule[day].day + ")"}</p>
+          <TextareaAutosize className="request-cell value" value={schedule[day].opens_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'open')} />
+          <p className="request-cell name">{ "Closes at (" + schedule[day].day + ")"}</p>
+          <TextareaAutosize className="request-cell value" value={schedule[day].closes_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'close')} />
+        </div>
+      );
+    }
+    return scheduleOutput;
+  }
+  renderNotesFields() {
+    let { notes } = this.state;
+    let notesOutput = [];
+    for(let note in notes) {
+      notesOutput.push(
+        <div key={"note" + note} className="request-entry">
+          <p className="request-cell name">{`note ${note}`}</p>
+          <TextareaAutosize className="request-cell value" value={notes[note]} onChange={(e) => this.changeNoteValue(note, e.target.value)} />
+        </div>
+      );
+    }
+    return notesOutput;
+  }
+
+  renderAdditionalFields() {
+    let { serviceFields } = this.state;
+    let additionalOutput = [];
+    for(let field in serviceFields) {
+      additionalOutput.push(
+        <div key={field} className="request-entry">
+          <p className="request-cell name">{field}</p>
+          <TextareaAutosize className="request-cell value" value={serviceFields[field]} onChange={(e) => this.changeServiceValue(field, e.target.value)} />
+        </div>
+      );
+    }
+    return additionalOutput;
+  }
 
   render() {
     let { notes, schedule, servicFields } = this.state;
     return (
       <div className="change-log">
         <div className="request-fields">
-          {this.renderProposedServiceFields(servicFields, notes, schedule)}
+          {this.renderNotesFields()}
+          {this.renderScheduleFields()}
+          {this.renderAdditionalFields()}
         </div>
       </div>
     );
