@@ -68,7 +68,7 @@ class Service extends Component {
             <ServiceEligibility subject='Eligibility' result={this.props.service.eligibility}/>
             <ServiceEligibility subject='Required documents' result={this.props.service.required_documents}/>
             <ServiceEligibility subject='Fees' result={this.props.service.fee}/>
-            {this.props.service.notes ? null : <Notes notes={this.props.service.notes}/> }
+            {this.props.service.notes.length ? <Notes notes={this.props.service.notes}/> : null  }
             <WeeklyHours schedule={this.props.service.schedule} />
           </ul>
           <div className="service--details-toggle" onClick={this.toggleVisible}>

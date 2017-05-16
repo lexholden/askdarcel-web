@@ -108,7 +108,7 @@
 // ORG SERVICES
 
 .service--section {
-  margin-top: calc-em(40px);
+  margin-top: calc-em(50px);
   &--header {
   	border-bottom: 1px solid #DDDDDD;
   	h4 {
@@ -186,32 +186,62 @@
 // ORG INFO
 
 .info--section {
-	margin-top: calc-em(40px);
+	margin-top: calc-em(50px);
 	.info {
 		margin-top: calc-em(30px);
+		display: flex;
+		width: calc-em(600px);
+		flew-wrap: wrap;
+		&--column {
+			width: 50%;
+			@include r_max($break-tablet-s) {
+	      width: 100%;
+	    }
+	    > span {
+	    	display: block;
+	    	margin-top: calc-em(10px);
+	    	&:first-of-type {
+	    		margin-top: 0;
+	    	}
+	    }
+		}
 	}
 }
 
-
+.weekly-hours-list {
+	&--item {
+		display: flex;
+		line-height: 1.5;
+		&--day {
+			width: calc-em(130px);
+		}
+	}
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // ORG ASIDE
 
 .org--aside {
 	max-height: 100vh;
-	padding: calc-em(30px) 0 0 calc-em(30px);
+	padding: 0 0 0 calc-em(30px);
 	width: 100%;
 	max-width: calc-em(240px);
 	&--content {
 		width: 100%;
 		max-width: calc-em(240px);
-		&--submit {
+		&--button {
 			color: #FFFFFF;
 			font-size: 17px;
 			font-weight: bold;
 			padding: calc-em(9px) calc-em(25px);
 			background: #1C72E6;
 			border-radius: 8px;
+			margin-top: calc-em(10px);
+			display: block;
+			text-align: center;
+			&-first-of-type {
+				margin-top: 0;
+			}
 		}
 		&--nav {
 			margin: calc-em(30px) 0;

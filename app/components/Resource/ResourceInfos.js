@@ -5,7 +5,7 @@ import { timeToString, stringToTime, daysOfTheWeek, buildHoursText} from '../../
 
 class Cat extends Component {
   render() {
-    return <span className="org-category">{this.props.category}</span>;
+    return <p>{this.props.category}</p>;
   }
 }
 
@@ -24,7 +24,7 @@ class ResourceCategories extends Component {
       let cats = Object.keys(categoryMap).map((cat, i) =>{
         return <Cat category={cat} key={i} />
       });
-      return <div>{cats}</div>;
+      return <span className="categories">{cats}</span>;
     } else {
       return null;
     }

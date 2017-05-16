@@ -72,12 +72,15 @@ class Resource extends Component {
 				      		<h4>Info</h4>
 				      	</header>
 			          <ul className="info">
-			          	<ResourceCategories categories={resource.categories} />
-			            <AddressInfo address={resource.address} />
-			            <PhoneNumber phones={resource.phones} />
-			            <Website website={resource.website} />
-			            <Languages />
-			            <DetailedHours schedule={resource.schedule.schedule_days} />
+				          <div className="info--column">
+				          	<ResourceCategories categories={resource.categories} />
+				            <AddressInfo address={resource.address} />
+				            <PhoneNumber phones={resource.phones} />
+				            <Website website={resource.website} />
+				          </div>
+				          <div className="info--column">
+			            	<DetailedHours schedule={resource.schedule.schedule_days} />
+			            </div>
 			          </ul>
 		          </section>
 	          </div>
@@ -88,10 +91,11 @@ class Resource extends Component {
                   href={`https://maps.google.com?saddr=Current+Location&daddr=${resource.address.latitude},${resource.address.longitude}&dirflg=w`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="directions-btn"
-                />
-                <p className="org-distance">{this.props.location.query.time || ''}</p>
-                <Link to={{ pathname: "/resource/edit", query: { resourceid: resource.id } }} className="button">
+                  className="org--aside--content--button directions-button"
+                >
+                	Get Directions
+                </a>
+                <Link to={{ pathname: "/resource/edit", query: { resourceid: resource.id } }} className="org--aside--content--button edit-button">
                     Make Edits
                 </Link>
 		          	<nav className="org--aside--content--nav">
