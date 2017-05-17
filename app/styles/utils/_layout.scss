@@ -55,10 +55,7 @@ $break-desktop-xl: 2000px;
 }
 
 body, html {
-  overflow:hidden;
-  height:100%;
   min-height: inherit;
-  position:fixed;
   width:100%;
   top:0;
   left:0;
@@ -66,10 +63,6 @@ body, html {
 
 #root {
   @extend %flex-column;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  height: 100vh;
-  -webkit-overflow-scrolling: touch;
   @include r_max($break-tablet-s) {
     padding-bottom: calc-em(60px);
   }

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Gmap from './ResourcesMap.js';
+import Loader from '../Loader';
+
 import queryString from 'query-string';
 import ResourcesList from './ResourcesList'
+import { timeToString, stringToTime, daysOfTheWeek } from '../../utils/index';
 
 // Show the span of results (11 - 20 for example rather than the #10)
 // Make the map update with proper markers
@@ -138,22 +141,8 @@ class ResourcesTable extends Component {
   }
 
   render() {
-    return !this.state.resources ? <div className="loader">
-      <div className="sk-fading-circle">
-        <div className="sk-circle1 sk-circle"></div>
-        <div className="sk-circle2 sk-circle"></div>
-        <div className="sk-circle3 sk-circle"></div>
-        <div className="sk-circle4 sk-circle"></div>
-        <div className="sk-circle5 sk-circle"></div>
-        <div className="sk-circle6 sk-circle"></div>
-        <div className="sk-circle7 sk-circle"></div>
-        <div className="sk-circle8 sk-circle"></div>
-        <div className="sk-circle9 sk-circle"></div>
-        <div className="sk-circle10 sk-circle"></div>
-        <div className="sk-circle11 sk-circle"></div>
-        <div className="sk-circle12 sk-circle"></div>
-      </div>
-    </div> : (<div className="results">
+    return (!this.state.resources ? <Loader /> :
+              <div className="results">
                 <div className="results-table">
                   <header>
                     <h1 className="results-title">{this.state.categoryName}</h1>
@@ -288,33 +277,6 @@ function openHours(scheduleDays) {
   }
 
   return hours;
-}
-
-function timeToString(hours) {
-  let hoursString = "";
-  if(hours < 12) {
-    hoursString += hours + "am";
-  } else {
-    if(hours > 12) {
-      hours -= 12;
-    }
-
-    hoursString += hours + "pm";
-  }
-
-  return hoursString;
-}
-
-function daysOfTheWeek() {
-  return [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
 }
 
 export default ResourcesTable;

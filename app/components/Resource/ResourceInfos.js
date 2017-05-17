@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Hours from './Hours';
 import classNames from 'classnames/bind';
+import { timeToString, stringToTime, daysOfTheWeek, buildHoursText} from '../../utils/index';
 
 class Cat extends Component {
   render() {
@@ -94,43 +95,6 @@ class StreetView extends Component {
   }
 }
 
-function buildHoursText(schedule_days) {
-  if(!schedule_days) {
-    return;
-  }
-
-  let hours = "";
-  let styles = {
-    cell: true
-  };
-  const currentDate = new Date();
-  const currentHour = currentDate.getHours();
-
-  const days = schedule_days.filter(schedule_day => {
-    return (schedule_day && schedule_day.day.replace(/,/g, '') == daysOfTheWeek()[currentDate.getDay()] &&
-        currentHour >= schedule_day.opens_at && currentHour < schedule_day.closes_at);
-  });
-
-
-
-  if(days.length && days.length > 0) {
-    for(let i = 0; i < days.length; i++) {
-      let day = days[i];
-      hours = "Open Now: " + timeToString(day.opens_at) + "-" + timeToString(day.closes_at);
-      if(i != days.length - 1) {
-        hours += ", ";
-      }
-    }
-  } else {
-    hours = "Closed Now";
-    styles.closed = true;
-  }
-
-  return (
-    <p>{hours}</p>
-  );
-}
-
 function buildLocation(address) {
   let line1 = "";
   let line2 = "";
@@ -193,32 +157,5 @@ function buildImgURL(address) {
     return "http://lorempixel.com/200/200/city/";
   }
 }
-function timeToString(hours) {
-  let hoursString = "";
-  if(hours < 12) {
-    hoursString += hours + "am";
-  } else {
-    if(hours > 12) {
-      hours -= 12;
-    }
-
-    hoursString += hours + "pm";
-  }
-
-  return hoursString;
-}
-
-function daysOfTheWeek() {
-  return [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
-}
-
 
 export {AddressInfo, BusinessHours, PhoneNumber, ResourceCategories, Website, Languages, StreetView};

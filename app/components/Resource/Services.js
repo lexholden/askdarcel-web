@@ -58,7 +58,7 @@ class Service extends Component {
           <p className="service-description">{this.props.service.long_description}</p>
         </div>
         <div className="details-toggle" onClick={this.toggleVisible}>
-          <span>{infoHidden ? 
+          <span>{infoHidden ?
               <span><i className="material-icons">keyboard_arrow_down</i>More Info</span> :
               null}</span>
         </div>
@@ -73,7 +73,7 @@ class Service extends Component {
               <Notes notes={this.props.service.notes}/>
             </ul>
             <div className="details-toggle" onClick={this.toggleVisible}>
-              <span>{infoHidden ? 
+              <span>{infoHidden ?
                   null :
                   <span><i className="material-icons">keyboard_arrow_up</i>Less Info</span>}</span>
             </div>
@@ -116,11 +116,6 @@ class Note extends Component {
       <li className="service-row">{this.props.note.note}</li>
     );
   }
-}
-
-function formatDate(dateString) {
-  let date = new Date(dateString);
-  return (date.getMonth() + 1) + '/' + (date.getDate()) + '/' + date.getFullYear();
 }
 
 export default Services;

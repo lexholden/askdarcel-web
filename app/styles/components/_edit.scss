@@ -1,6 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 // ADD/EDIT PAGE
-
 .edit {
 	width:100%;
   max-width: calc-em(1000px);
@@ -152,6 +151,10 @@
 			margin-bottom: calc-em(10px);
 		}
 
+		textarea {
+			height: calc-em(200px);
+		}
+
 		button {
 			border-radius: 8px;
 			background-color: #AAAAAA;
@@ -216,7 +219,7 @@
 			padding-top: calc-em(15px);
 		}
 		textarea {
-			height: calc-em(53px);
+			height: calc-em(185px);
 		}
 	}
 }

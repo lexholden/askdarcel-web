@@ -116,6 +116,11 @@ class EditService extends Component {
 						<input placeholder='Name' data-field='name' defaultValue={this.props.service.name} onChange={this.handleFieldChange} />
 					</li>
 
+					<li key="email" className="edit--section--list--item email">
+						<label>Service E-Mail</label>
+						<input type="url" defaultValue={this.props.service.email} data-field='email' onChange={this.handleFieldChange}/>
+					</li>
+
 					<li className="edit--section--list--item">
 						<label>Service description</label>
 						<textarea placeholder='Description' data-field='long_description' defaultValue={this.props.service.long_description} onChange={this.handleFieldChange} />
@@ -123,7 +128,7 @@ class EditService extends Component {
 
 					<li className="edit--section--list--item">
 						<label>How do you apply for this service</label>
-					<textarea placeholder='Application Process' data-field='application_process' defaultValue={this.props.service.application_process} onChange={this.handleFieldChange} />
+						<textarea placeholder='Application Process' data-field='application_process' defaultValue={this.props.service.application_process} onChange={this.handleFieldChange} />
 					</li>
 
 					<li className="edit--section--list--item">

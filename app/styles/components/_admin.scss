@@ -7,7 +7,27 @@
             padding-top: calc-em(15px);
 
             h1 {
+                cursor: pointer;
+                user-select: none;
                 padding-bottom: calc-em(5px);
+            }
+
+            .expander {
+                transition: 0.2s ease;
+
+                &.collapsed {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .group-content {
+                transition: 0.2s ease;
+                overflow: hidden;
+
+                &.collapsed {
+                    opacity: 0;
+                    max-height: 0;
+                }
             }
         }
 
@@ -43,6 +63,13 @@
                         vertical-align: middle;
                         padding: calc-em(10px);
                     }
+                    textarea.request-cell {
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        width: 100%;
+                        font-size: 1.125rem;
+                    }
 
                     .name {
                         width: 25%;
@@ -59,8 +86,9 @@
 
     .actions {
         display: inline-block;
+        float: right;
         .material-icons {
-            display: block;
+            display: inline-block;
             cursor: pointer;
             width: calc-em(24px);
         }
