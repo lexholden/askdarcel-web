@@ -48,6 +48,7 @@ class Admin extends React.Component {
     let requestString = action.replace(/{(.*?)}/, id);
     let removalFunc;
     let logMessage;
+    debugger;
 
     switch (action) {
       case changeRequestConstants.APPROVE:
@@ -68,14 +69,34 @@ class Admin extends React.Component {
         break;
     }
 
-    dataService.post(requestString, { change_request: changeRequestFields }, getAuthRequestHeaders())
-      .then((response) => {
-        if (response.ok) {
-          removalFunc(id);
-        } else {
-          console.log(logMessage);
-        }
-      })
+    if (action == changeRequestConstants.APPROVE) {
+      dataService.post(requestString, { change_request: changeRequestFields }, getAuthRequestHeaders())
+        .then((response) => {
+          if (response.ok) {
+            removalFunc(id);
+          } else {
+            console.log(logMessage);
+          }
+        })
+    } else if (action == changeRequestConstants.APPROVE_SERVICE) {
+      dataService.post(requestString, { service: changeRequestFields }, getAuthRequestHeaders())
+        .then((response) => {
+          if (response.ok) {
+            removalFunc(id);
+          } else {
+            console.log(logMessage);
+          }
+        })
+    } else {
+      dataService.post(requestString, {}, getAuthRequestHeaders())
+        .then((response) => {
+          if (response.ok) {
+            removalFunc(id);
+          } else {
+            console.log(logMessage);
+          }
+        })
+    }
   }
 
   removeChangeRequest(changeRequestID) {

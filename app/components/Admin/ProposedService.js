@@ -1,5 +1,8 @@
 import React from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
+import * as dataService from '../../utils/DataService';
+import * as ChangeRequestTypes from './ChangeRequestTypes';
+import Actions from './Actions';
 
 class ProposedService extends React.Component {
   constructor(props) {
@@ -7,7 +10,6 @@ class ProposedService extends React.Component {
 
     this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
     this.renderProposedServiceFields = this.renderProposedServiceFields.bind(this);
-    this.changeFieldValue = this.changeFieldValue.bind(this);
     this.renderNotesFields = this.renderNotesFields.bind(this);
     this.renderScheduleFields = this.renderScheduleFields.bind(this);
     this.renderAdditionalFields = this.renderAdditionalFields.bind(this);
@@ -66,23 +68,6 @@ class ProposedService extends React.Component {
     }
     return jsx;
   }
-
-  changeFieldValue(fieldName, value, index) {
-    // if(fieldName === "notes") {
-    //   let tempNotes = this.state.notes;
-    //   tempNotes[index] = value;
-    //   this.setState({ notes: tempNotes });
-    // }
-  }
-
-  // tableEntry(key, fieldName, value, index, type) {
-  //   return (
-  //     <div key={key} className="request-entry">
-  //       <p className="request-cell name">{fieldName}</p>
-  //       <TextareaAutosize className="request-cell value" value={this.state[fieldName][index]} onChange={(e) => this.changeFieldValue(fieldName, e.target.value, index)} />
-  //     </div>
-  //   );
-  // }
 
   changeScheduleValue(day, value, time) {
     console.log('time', time);
@@ -153,7 +138,7 @@ class ProposedService extends React.Component {
   }
 
   render() {
-    let { notes, schedule, servicFields } = this.state;
+    let { notes, schedule, serviceFields } = this.state;
     return (
       <div className="change-log">
         <div className="request-fields">
@@ -161,6 +146,13 @@ class ProposedService extends React.Component {
           {this.renderScheduleFields()}
           {this.renderAdditionalFields()}
         </div>
+        <Actions
+            id={this.props.service.id}
+            changeRequestFields={{...serviceFields, notes, schedule}}
+            actionHandler={this.props.actionHandler}
+            approveAction={ChangeRequestTypes.APPROVE_SERVICE}
+            rejectAction={ChangeRequestTypes.REJECT_SERVICE}
+          />
       </div>
     );
   }

@@ -59,13 +59,7 @@ function renderProposedServices(services, actionHandler) {
       <div key={'svc'+service.id}>
         <p>Proposed Service</p>
         <div className="request-container">
-          <ProposedService service={service} />
-          <Actions
-            id={service.id}
-            actionHandler={actionHandler}
-            approveAction={ChangeRequestTypes.APPROVE_SERVICE}
-            rejectAction={ChangeRequestTypes.REJECT_SERVICE}
-          />
+          <ProposedService service={service} actionHandler={actionHandler} />
         </div>
       </div>
     );
