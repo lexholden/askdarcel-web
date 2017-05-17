@@ -48,8 +48,7 @@ class Admin extends React.Component {
     let requestString = action.replace(/{(.*?)}/, id);
     let removalFunc;
     let logMessage;
-    debugger;
-
+    
     switch (action) {
       case changeRequestConstants.APPROVE:
         removalFunc = this.removeChangeRequest;
