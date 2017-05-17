@@ -85,14 +85,14 @@ class ProposedService extends React.Component {
   // }
 
   changeScheduleValue(day, value, time) {
+    console.log('time', time);
     let { schedule } = this.state;
     let tempSchedule = {};
     if(time == 'open') {
-      tempSchedule = Object.assign({}, schedule, {[day]: Object.assign({}, schedule[day], { opens_at: value } )});  
+      tempSchedule = Object.assign({}, schedule, {[day]: Object.assign({}, schedule[day], { opens_at: parseInt(value) } )});  
     } else {
-      tempSchedule = Object.assign({}, schedule, {[day]: Object.assign({}, schedule[day], { closes_at: value } )});  
+      tempSchedule = Object.assign({}, schedule, {[day]: Object.assign({}, schedule[day], { closes_at: parseInt(value) } )});  
     }
-    debugger;
     this.setState({ schedule: tempSchedule });
   }
 
@@ -110,13 +110,17 @@ class ProposedService extends React.Component {
     let scheduleOutput = [];
     for(let day in schedule) {
       scheduleOutput.push(
-        <div key={"sched" + day} className="request-entry">
-          <p className="request-cell name">{ "Opens at (" + schedule[day].day + ")"}</p>
-          <TextareaAutosize className="request-cell value" value={schedule[day].opens_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'open')} />
-          <p className="request-cell name">{ "Closes at (" + schedule[day].day + ")"}</p>
-          <TextareaAutosize className="request-cell value" value={schedule[day].closes_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'close')} />
-        </div>
+          <div key={"sched" + day} className="request-entry">
+            <p className="request-cell name">{schedule[day].day + "(Opens at)"}</p>
+            <TextareaAutosize className="value request-cell" value={schedule[day].opens_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'open')} />
+          </div>
       );
+      scheduleOutput.push(
+        <div key={"sched closes" + day} className="request-entry">
+          <p className="request-cell name">{schedule[day].day + "(Closes at)"}</p>
+          <TextareaAutosize className="value request-cell" value={schedule[day].closes_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'close')} />
+        </div>
+      )
     }
     return scheduleOutput;
   }
