@@ -3,51 +3,85 @@ import ChangeRequest from './ChangeRequest';
 import * as ChangeRequestTypes from './ChangeRequestTypes';
 import ProposedService from './ProposedService';
 import Actions from './Actions';
+import * as _ from 'lodash/fp/object';
 
-var ChangeRequests = (props) => {
-  return (
-    <div className="change-requests">
-            {renderChangeRequests(props.changeRequests, props.services, props.actionHandler)}
-        </div>
-  );
-};
 
-function renderChangeRequests(changeRequests, services, actionHandler) {
-  let resourceToChangeRequests = {};
-  let resourceObjects = {};
-  let changeRequestWrappers = [];
-  changeRequests.forEach((changeRequest) => {
-    let resourceID = changeRequest.resource.id;
+class ChangeRequests extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      resourceToCollapsed: {}
+    };
+    this.props.changeRequests.forEach((changeRequest) => {
+      let resourceID = changeRequest.resource.id;
+      this.state.resourceToCollapsed[resourceID] = true;
+    });
+    this.props.services.forEach((service) => {
+      let resourceID = service.resource.id;
+      this.state.resourceToCollapsed[resourceID] = true;
+    });
 
-    if (!resourceToChangeRequests.hasOwnProperty(resourceID)) {
-      resourceToChangeRequests[resourceID] = [];
-    }
+  }
 
-    resourceToChangeRequests[resourceID].push(changeRequest);
-    resourceObjects[resourceID] = changeRequest.resource;
-  });
+  toggleCollapsed(resourceID) {
+    let resourceToCollapsed = _.extend({}, this.state.resourceToCollapsed);
+    resourceToCollapsed[resourceID] ^= true;
+    this.setState({
+      resourceToCollapsed: resourceToCollapsed
+    });
+  }
 
-  let resourceToServices = {};
-  services.forEach((service) => {
-    let resourceID = service.resource.id;
-    if (!resourceToServices.hasOwnProperty(resourceID)) {
-      resourceToServices[resourceID] = [];
-    }
-    resourceToServices[resourceID].push(service);
-    resourceObjects[resourceID] = service.resource;
-  });
-
-  for (let resourceID in resourceObjects) {
-    changeRequestWrappers.push(
-      <div key={resourceID} className="group-container">
-                <h1>{resourceObjects[resourceID].name}</h1>
-                {renderProposedServices(resourceToServices[resourceID], actionHandler)}
-                {renderIndividualRequests(resourceToChangeRequests[resourceID], actionHandler)}
-            </div>
+  render() {
+    return (
+      <div className="change-requests">
+        {this.renderChangeRequests(this.props.changeRequests, this.props.services, this.props.actionHandler)}
+      </div>
     );
   }
 
-  return changeRequestWrappers;
+  renderChangeRequests(changeRequests, services, actionHandler) {
+    let resourceToChangeRequests = {};
+    let resourceObjects = {};
+    let changeRequestWrappers = [];
+    changeRequests.forEach((changeRequest) => {
+      let resourceID = changeRequest.resource.id;
+
+      if (!resourceToChangeRequests.hasOwnProperty(resourceID)) {
+        resourceToChangeRequests[resourceID] = [];
+      }
+
+      resourceToChangeRequests[resourceID].push(changeRequest);
+      resourceObjects[resourceID] = changeRequest.resource;
+    });
+
+    let resourceToServices = {};
+    services.forEach((service) => {
+      let resourceID = service.resource.id;
+      if (!resourceToServices.hasOwnProperty(resourceID)) {
+        resourceToServices[resourceID] = [];
+      }
+      resourceToServices[resourceID].push(service);
+      resourceObjects[resourceID] = service.resource;
+    });
+
+    for (let resourceID in resourceObjects) {
+      let collapsed = this.state.resourceToCollapsed[resourceID] ? "collapsed" : "";
+      changeRequestWrappers.push(
+        <div key={resourceID} className="group-container">
+          <h1 onClick={() => this.toggleCollapsed(resourceID)}>
+            {resourceObjects[resourceID].name}
+            <span className={`material-icons expander ${collapsed}`}>expand_less</span>
+          </h1>
+          <div className={`group-content ${collapsed}`}>
+            {renderProposedServices(resourceToServices[resourceID], actionHandler)}
+            {renderIndividualRequests(resourceToChangeRequests[resourceID], actionHandler)}
+          </div>
+        </div>
+      );
+    }
+
+    return changeRequestWrappers;
+  }
 }
 
 function renderProposedServices(services, actionHandler) {

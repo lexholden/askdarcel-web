@@ -1,7 +1,6 @@
 import * as _ from 'lodash/fp/object';
 
 export function post(url, body, headers) {
-
   let queryHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/json"

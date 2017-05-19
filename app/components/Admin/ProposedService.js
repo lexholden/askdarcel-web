@@ -62,6 +62,7 @@ class ProposedService extends React.Component {
         )
       );
     }
+  }
 
     for(let field in serviceFields) {
       jsx.push(this.tableEntry(field, field, service[field]));

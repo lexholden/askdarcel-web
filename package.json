@@ -20,7 +20,7 @@
     "history": "2.0.1",
     "html-webpack-plugin": "^2.19.0",
     "image-webpack-loader": "^1.8.0",
-    "lodash": "^4.17.3",
+    "lodash": "^4.17.4",
     "react": "^15.1.0",
     "react-autosize-textarea": "^0.4.3",
     "react-dom": "^15.1.0",

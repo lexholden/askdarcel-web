@@ -7,7 +7,27 @@
             padding-top: calc-em(15px);
 
             h1 {
+                cursor: pointer;
+                user-select: none;
                 padding-bottom: calc-em(5px);
+            }
+
+            .expander {
+                transition: 0.2s ease;
+
+                &.collapsed {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .group-content {
+                transition: 0.2s ease;
+                overflow: hidden;
+
+                &.collapsed {
+                    opacity: 0;
+                    max-height: 0;
+                }
             }
         }
 
