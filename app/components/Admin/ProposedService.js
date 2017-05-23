@@ -9,7 +9,7 @@ class ProposedService extends React.Component {
     super(props);
 
     this.state = { schedule: {}, serviceFields: {}, notes: {}, schedule: {} };
-    this.renderProposedServiceFields = this.renderProposedServiceFields.bind(this);
+    // this.renderProposedServiceFields = this.renderProposedServiceFields.bind(this);
     this.renderNotesFields = this.renderNotesFields.bind(this);
     this.renderScheduleFields = this.renderScheduleFields.bind(this);
     this.renderAdditionalFields = this.renderAdditionalFields.bind(this);
@@ -46,29 +46,29 @@ class ProposedService extends React.Component {
     this.setState({ serviceFields: newServiceFields, notes: tempNotes, schedule: tempSchedule });
   }
 
-  renderProposedServiceFields(serviceFields, notes, schedule) {
-    let jsx = [];
-    for(let note in notes) {
-      jsx.push(this.tableEntry("note" + note, "note", notes[note], note));
-    }
+  // renderProposedServiceFields(serviceFields, notes, schedule) {
+  //   let jsx = [];
+  //   for(let note in notes) {
+  //     jsx.push(this.tableEntry("note" + note, "note", notes[note], note));
+  //   }
 
-    for(let day in schedule) {
-      jsx.push(
-        this.tableEntry(
-          "sched" + schedule[day].day,
-          "Schedule (" + schedule[day].day + ")",
-          "Opens at: " + schedule[day].opens_at + ", Closes at: " + schedule[day].closes_at, 
-          day
-        )
-      );
-    }
-  }
+  //   for(let day in schedule) {
+  //     jsx.push(
+  //       this.tableEntry(
+  //         "sched" + schedule[day].day,
+  //         "Schedule (" + schedule[day].day + ")",
+  //         "Opens at: " + schedule[day].opens_at + ", Closes at: " + schedule[day].closes_at, 
+  //         day
+  //       )
+  //     );
+  //   }
+  // }
 
-    for(let field in serviceFields) {
-      jsx.push(this.tableEntry(field, field, service[field]));
-    }
-    return jsx;
-  }
+  //   for(let field in serviceFields) {
+  //     jsx.push(this.tableEntry(field, field, service[field]));
+  //   }
+  //   return jsx;
+  // }
 
   changeScheduleValue(day, value, time) {
     console.log('time', time);
