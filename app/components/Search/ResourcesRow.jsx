@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Rating from './Rating'
+import { timeToString, stringToTime, daysOfTheWeek } from '../../utils/index';
 
 
 class ResourcesRow extends Component {
@@ -183,18 +184,6 @@ function buildImgURL(address) {
   } else {
     return "http://lorempixel.com/200/200/city/";
   }
-}
-
-function timeToString(hours) {
-  let date = new Date();
-  let hoursString = hours.toString();
-
-  date.setHours(hoursString.substring(0,hoursString.length - 2));
-  date.setMinutes(hoursString.substring(hoursString.length - 2,hoursString.length));
-  date.setSeconds(0)
-
-  let timeString = date.toLocaleTimeString().replace(/:\d+ /, ' ');
-  return timeString;
 }
 
 export default ResourcesRow;

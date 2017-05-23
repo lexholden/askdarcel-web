@@ -23,17 +23,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   -webkit-backface-visibility: hidden;
 }
 
-html {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
-}
-::-webkit-scrollbar-thumb {
-    background: rgb(0,255,147);
-}
-
 // Zero out font sizes. Most browser defaults ~16px */
 html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; overflow-y:scroll; min-height: 100vh;-webkit-font-smoothing: antialiased;}
 body {min-height: 100vh;}

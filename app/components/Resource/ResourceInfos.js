@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Hours from './Hours';
 import classNames from 'classnames/bind';
+import { timeToString, stringToTime, daysOfTheWeek, buildHoursText} from '../../utils/index';
 
 class Cat extends Component {
   render() {
-    return <span className="org-category">{this.props.category}</span>;
+    return <p>{this.props.category}</p>;
   }
 }
 
@@ -23,7 +24,7 @@ class ResourceCategories extends Component {
       let cats = Object.keys(categoryMap).map((cat, i) =>{
         return <Cat category={cat} key={i} />
       });
-      return <div>{cats}</div>;
+      return <span className="categories">{cats}</span>;
     } else {
       return null;
     }
@@ -33,17 +34,14 @@ class ResourceCategories extends Component {
 class AddressInfo extends Component {
   render() {
     return (
-      <li className="address">
-        <i className="material-icons">place</i>
-        <div className="address-block">
-          {buildLocation(this.props.address)}
-        </div>
-      </li>
+      <span className="address">
+        {buildLocation(this.props.address)}
+      </span>
     );
   }
 }
 
-class BusinessHours extends Component {
+class TodaysHours extends Component {
   render() {
     return (
       <Hours schedule={this.props.schedule_days} />
@@ -54,10 +52,9 @@ class BusinessHours extends Component {
 class PhoneNumber extends Component {
   render() {
     return (
-      <li className="phone">
-        <i className="material-icons">call</i>
+      <span className="phone">
         {buildPhoneNumber(this.props.phones)}
-      </li>
+      </span>
     );
   }
 }
@@ -65,10 +62,9 @@ class PhoneNumber extends Component {
 class Languages extends Component {
   render() {
     return (
-      <li className="lang">
-        <i className="material-icons">translate</i>
+      <span className="lang">
         <p>English, Spanish</p>
-      </li>
+      </span>
     );
   }
 }
@@ -76,10 +72,9 @@ class Languages extends Component {
 class Website extends Component {
   render() {
     return (
-      <li className="website">
-        <i className="material-icons">public</i>
-        <p><a href={this.props.website} target="_blank">{this.props.website}</a></p>
-      </li>
+      <span className="website">
+        <a href={this.props.website} target="_blank">{this.props.website}</a>
+      </span>
     );
   }
 }
@@ -88,47 +83,10 @@ class StreetView extends Component {
   render() {
     return (
       <div className="org-streetview">
-        <img className="org-img" src={buildImgURL(this.props.address)} />
+        <img className="org-streetview--img" src={buildImgURL(this.props.address)} />
       </div>
     );
   }
-}
-
-function buildHoursText(schedule_days) {
-  if(!schedule_days) {
-    return;
-  }
-
-  let hours = "";
-  let styles = {
-    cell: true
-  };
-  const currentDate = new Date();
-  const currentHour = currentDate.getHours();
-
-  const days = schedule_days.filter(schedule_day => {
-    return (schedule_day && schedule_day.day.replace(/,/g, '') == daysOfTheWeek()[currentDate.getDay()] &&
-        currentHour >= schedule_day.opens_at && currentHour < schedule_day.closes_at);
-  });
-
-
-
-  if(days.length && days.length > 0) {
-    for(let i = 0; i < days.length; i++) {
-      let day = days[i];
-      hours = "Open Now: " + timeToString(day.opens_at) + "-" + timeToString(day.closes_at);
-      if(i != days.length - 1) {
-        hours += ", ";
-      }
-    }
-  } else {
-    hours = "Closed Now";
-    styles.closed = true;
-  }
-
-  return (
-    <p>{hours}</p>
-  );
 }
 
 function buildLocation(address) {
@@ -193,32 +151,5 @@ function buildImgURL(address) {
     return "http://lorempixel.com/200/200/city/";
   }
 }
-function timeToString(hours) {
-  let hoursString = "";
-  if(hours < 12) {
-    hoursString += hours + "am";
-  } else {
-    if(hours > 12) {
-      hours -= 12;
-    }
 
-    hoursString += hours + "pm";
-  }
-
-  return hoursString;
-}
-
-function daysOfTheWeek() {
-  return [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
-}
-
-
-export {AddressInfo, BusinessHours, PhoneNumber, ResourceCategories, Website, Languages, StreetView};
+export {Cat, AddressInfo, TodaysHours, PhoneNumber, ResourceCategories, Website, Languages, StreetView};
