@@ -74,13 +74,13 @@ class ProposedService extends React.Component {
       scheduleOutput.push(
           <div key={"sched" + day} className="request-entry">
             <p className="request-cell name">{schedule[day].day + "(Opens at)"}</p>
-            <TextareaAutosize className="value request-cell" value={schedule[day].opens_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'open')} />
+            <textarea className="value request-cell" value={schedule[day].opens_at || ''} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'open')} />
           </div>
       );
       scheduleOutput.push(
         <div key={"sched closes" + day} className="request-entry">
           <p className="request-cell name">{schedule[day].day + "(Closes at)"}</p>
-          <TextareaAutosize className="value request-cell" value={schedule[day].closes_at} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'close')} />
+          <textarea className="value request-cell" value={schedule[day].closes_at || ''} onChange={(e) => this.changeScheduleValue(day, e.target.value, 'close')} />
         </div>
       )
     }
@@ -93,7 +93,7 @@ class ProposedService extends React.Component {
       notesOutput.push(
         <div key={"note" + note} className="request-entry">
           <p className="request-cell name">{`note ${note}`}</p>
-          <TextareaAutosize className="request-cell value" value={notes[note]} onChange={(e) => this.changeNoteValue(note, e.target.value)} />
+          <textarea className="request-cell value" value={notes[note] || ''} onChange={(e) => this.changeNoteValue(note, e.target.value)} />
         </div>
       );
     }
@@ -107,7 +107,7 @@ class ProposedService extends React.Component {
       additionalOutput.push(
         <div key={field} className="request-entry">
           <p className="request-cell name">{field}</p>
-          <TextareaAutosize className="request-cell value" value={serviceFields[field]} onChange={(e) => this.changeServiceValue(field, e.target.value)} />
+          <textarea className="request-cell value" value={serviceFields[field] || ''} onChange={(e) => this.changeServiceValue(field, e.target.value)} />
         </div>
       );
     }
