@@ -7,11 +7,14 @@ import EditAddress from './EditAddress';
 import EditServices from './EditServices';
 import EditNotes from './EditNotes';
 import EditSchedule from './EditSchedule';
+import EditPhones from './EditPhones';
 import * as dataService from '../../utils/DataService';
 import { withRouter } from 'react-router';
 import { daysOfTheWeek } from '../../utils/index';
+import _ from 'lodash';
 
 class EditSections extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -23,8 +26,10 @@ class EditSections extends React.Component {
             addressFields: {},
             services: {},
             notes: {},
+            phones: [],
             submitting: false
         };
+
         this.handleResourceFieldChange = this.handleResourceFieldChange.bind(this);
         this.handleScheduleChange = this.handleScheduleChange.bind(this);
         this.handlePhoneChange = this.handlePhoneChange.bind(this);
@@ -55,7 +60,11 @@ class EditSections extends React.Component {
 	    let url = '/api/resources/' + resourceID;
 	    fetch(url).then(r => r.json())
 	    .then(data => {
-	      	this.setState({resource: data.resource});
+	      	this.setState({
+                  resource: data.resource,
+                  originalResource: data.resource
+            });
+
             let scheduleMap = {};
             data.resource.schedule.schedule_days.forEach(function(day) {
                 scheduleMap[day.day] = day;
@@ -92,23 +101,17 @@ class EditSections extends React.Component {
             resourceChangeRequest.name = this.state.name;
             resourceModified = true;
         }
+        if(this.state.email && this.state.email !== resource.email) {
+            resourceChangeRequest.email = this.state.email;
+            resourceModified = true;
+        }
         //fire off resource request
         if(resourceModified) {
             promises.push(dataService.post('/api/resources/' + resource.id + '/change_requests', {change_request: resourceChangeRequest}));
         }
 
-        //Phone
-        let phoneChangeRequests = {};
-        if(this.state.phone) {
-            for(let key in this.state.phone) {
-                if(this.state.phone.hasOwnProperty(key) &&
-                this.state.phone[key].number !== resource.phones[0].number) {
-                    phoneChangeRequests[key] = {number: this.state.phone[key].number};
-                }
-            }
-        }
         //Fire off phone requests
-        this.postObject(phoneChangeRequests, 'phones', promises);
+        this.postCollection(this.state.phones, this.state.resource.phones, 'phones', promises);
 
         //schedule
         this.postObject(this.state.scheduleObj, 'schedule_days', promises);
@@ -133,6 +136,47 @@ class EditSections extends React.Component {
             console.log(err);
         });
 
+    }
+
+    postCollection(collection, originalCollection, path, promises) {
+        for(let i = 0; i < collection.length; i++) {
+            let item = collection[i];
+
+            if(i < originalCollection.length && item.dirty) {
+                let diffObj = this.getDiffObject(item, originalCollection[i]);
+                if(diffObj.numKeys > 0) {
+                    delete diffObj.obj.dirty;
+                    this.updateCollectionObject(diffObj.obj, item.id, path, promises);
+                }
+            } else if(item.dirty) {
+                //post a new object
+            }
+        }
+    }
+
+    getDiffObject(curr, orig) {
+        let diffObj = {
+            obj: {},
+            numKeys: 0
+        };
+
+        for(let key in curr) {
+            if(!_.isEqual(curr[key], orig[key])) {
+                diffObj.obj[key] = curr[key];
+                diffObj.numKeys++;
+            }
+        }
+
+        return diffObj;
+    }
+
+    updateCollectionObject(object, id, path, promises) {
+        promises.push(
+            dataService.post(
+                '/api/' + path + '/' + id + '/change_requests', 
+                {change_request: object}
+            )
+        );
     }
 
     postObject(object, path, promises) {
@@ -250,10 +294,8 @@ class EditSections extends React.Component {
         }
     }
 
-    handlePhoneChange(e) {
-        if(this.state.resource.phones[0]) {
-            this.setState({phone: {number: e.target.value}});
-        }
+    handlePhoneChange(phoneCollection) {
+        this.setState({phones: phoneCollection});
     }
 
     handleResourceFieldChange(e) {
@@ -306,19 +348,21 @@ class EditSections extends React.Component {
 
             <EditAddress address={this.state.resource.address} updateAddress={this.handleAddressChange}/>
 
-            <li key="tel" className="edit--section--list--item tel">
-                <label>Telephone</label>
-                <input type="tel" placeholder="Phone number" data-id={resource.phones[0] && resource.phones[0].id} defaultValue={resource.phones[0] && resource.phones[0].number} onChange={this.handlePhoneChange} />
-            </li>
+            <EditPhones collection={this.state.resource.phones} handleChange={this.handlePhoneChange} />
 
             <li key="website" className="edit--section--list--item email">
                 <label>Website</label>
                 <input type="url" defaultValue={resource.website} data-field='website' onChange={this.handleResourceFieldChange}/>
             </li>
 
+            <li key="email" className="edit--section--list--item email">
+                <label>E-Mail</label>
+                <input type="url" defaultValue={resource.email} data-field='email' onChange={this.handleResourceFieldChange}/>
+            </li>
+
             <li key="long_description" className="edit--section--list--item">
                 <label>Description</label>
-                <textarea defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
+                <textarea className="" defaultValue={resource.long_description} data-field='long_description' onChange={this.handleResourceFieldChange} />
             </li>
 
             <EditSchedule schedule={this.state.resource.schedule} handleScheduleChange={this.handleScheduleChange} />
