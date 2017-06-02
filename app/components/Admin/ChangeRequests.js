@@ -34,6 +34,7 @@ class ChangeRequests extends React.Component {
   render() {
     return (
       <div className="change-requests">
+        <h1 className="page-title">{`Change Requests (${this.props.changeRequests.length})`}</h1>
         {this.renderChangeRequests(this.props.changeRequests, this.props.services, this.props.actionHandler)}
       </div>
     );
@@ -67,11 +68,11 @@ class ChangeRequests extends React.Component {
     for (let resourceID in resourceObjects) {
       let collapsed = this.state.resourceToCollapsed[resourceID] ? "collapsed" : "";
       changeRequestWrappers.push(
-        <div key={resourceID} className="group-container">
-          <h1 onClick={() => this.toggleCollapsed(resourceID)}>
+        <div key={resourceID} className={`group-container ${collapsed}`}>
+          <h2 onClick={() => this.toggleCollapsed(resourceID)}>
             {resourceObjects[resourceID].name}
-            <span className={`material-icons expander ${collapsed}`}>expand_less</span>
-          </h1>
+            <span className={`material-icons expander ${collapsed} right`}>expand_less</span>
+          </h2>
           <div className={`group-content ${collapsed}`}>
             {renderProposedServices(resourceToServices[resourceID], actionHandler)}
             {renderIndividualRequests(resourceToChangeRequests[resourceID], actionHandler)}
@@ -101,22 +102,37 @@ function renderProposedServices(services, actionHandler) {
 }
 
 function renderIndividualRequests(changeRequests, actionHandler) {
-  if (!changeRequests) {
-    return;
-  }
+  if (!changeRequests) { return; }
+  let resourceInfoToRender = [];
   let requestsToRender = [];
   changeRequests.forEach((changeRequest) => {
-    requestsToRender.push(
-      <div key={'cr'+changeRequest.id}>
-        <p>{changeRequest.type}</p>
-        <div className="request-container">
-          <ChangeRequest changeRequest={changeRequest} actionHandler={actionHandler} />
-        </div>
-      </div>
-    );
+    switch (changeRequest.type) {
+      case 'ResourceChangeRequest':
+        resourceInfoToRender.push(
+          <div key={'cr'+changeRequest.id}>
+            { renderRequestWrapper(changeRequest, actionHandler) }
+          </div>
+        )
+        break;
+      default:
+        requestsToRender.push(
+          <div key={'cr'+changeRequest.id}>
+            <p>{changeRequest.type}</p>
+            { renderRequestWrapper(changeRequest, actionHandler) }
+          </div>
+        )
+    }
   });
 
-  return requestsToRender;
+  return resourceInfoToRender.concat(requestsToRender);
+}
+
+function renderRequestWrapper(changeRequest, actionHandler) {
+  return (
+    <div className="request-container">
+      <ChangeRequest changeRequest={changeRequest} actionHandler={actionHandler} />
+    </div>
+  )
 }
 
 export default ChangeRequests;

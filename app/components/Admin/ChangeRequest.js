@@ -4,8 +4,6 @@ import * as ChangeRequestTypes from './ChangeRequestTypes';
 import Actions from './Actions';
 import TextareaAutosize from 'react-autosize-textarea';
 
-
-
 class ChangeRequest extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +21,6 @@ class ChangeRequest extends React.Component {
     });
 
     this.setState({ changeRequestFields: tempChangeRequestFields });
-
   }
 
   retrieveModifiedObject() {
@@ -83,23 +80,24 @@ class ChangeRequest extends React.Component {
     let changedFields = [];
     let existingRecord = this.state.existingRecord;
     let changeRequestFields = this.state.changeRequestFields;
+    console.log(changeRequestFields)
 
     // TODO: existingRecord && existingRecord[field], need to fix this still
     for (let field in changeRequestFields) {
       changedFields.push(
-        <div key={field} className="request-fields">
-					<div className="request-entry">
-						<p className="request-cell name existing">{field}</p>
-						<p className="request-cell value existing">{existingRecord && existingRecord[field]}</p>
-					</div>
-					<div className="request-entry">
-						<p className="request-cell name">{field}</p>
-						<TextareaAutosize value={changeRequestFields[field]} onChange={(e) => this.changeFieldValue(field, e.target.value)} className="request-cell value" />
-					</div>
-				</div>
+        <div key={field}>
+          <label for={field}>{field}</label>
+          <div key={field} className="request-fields">
+    				<div className="request-entry">
+    					<pre className="request-cell value existing">{existingRecord[field]}</pre>
+    				</div>
+    				<div className="request-entry">
+    					<TextareaAutosize value={changeRequestFields[field]} onChange={(e) => this.changeFieldValue(field, e.target.value)} className="request-cell value" />
+    				</div>
+    			</div>
+        </div>
       );
     }
-
 
     return changedFields;
   }
