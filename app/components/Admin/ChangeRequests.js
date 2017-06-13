@@ -5,7 +5,6 @@ import ProposedService from './ProposedService';
 import Actions from './Actions';
 import * as _ from 'lodash/fp/object';
 
-
 class ChangeRequests extends React.Component {
   constructor(props) {
     super(props);

@@ -22,6 +22,7 @@
             }
 
             h2 {
+                color: $color-header;
                 cursor: pointer;
                 user-select: none;
                 padding-bottom: calc-em(5px);
@@ -60,6 +61,11 @@
 
             .change-log {
                 width: 100%;
+
+                label {
+                    font-weight: bold;
+                }
+
             }
 
             .request-fields {
@@ -74,15 +80,16 @@
                 .request-entry {
                     display: table-row;
                     min-height: calc-em(50px);
-                    border: 1px solid black;
+                    // border: 1px solid black;
 
                     .existing {
-                        color: red;
+                        color: $color-textfade;
                     }
 
                     .request-cell {
-                        display: table-cell;
+                        // display: table-cell;
                         text-align: left;
+                        border-radius: $padding-default;
                         vertical-align: middle;
                         padding: calc-em(10px);
                     }
@@ -92,6 +99,8 @@
                         box-sizing: border-box;
                         width: 100%;
                         font-size: 1.125rem;
+                        border-radius: 6px;
+                        border: 1px solid #BBB;
                     }
 
                     .name {

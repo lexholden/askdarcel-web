@@ -89,11 +89,11 @@ class ChangeRequest extends React.Component {
           <label for={field}>{field}</label>
           <div key={field} className="request-fields">
     				<div className="request-entry">
-    					<pre className="request-cell value existing">{existingRecord[field]}</pre>
-    				</div>
-    				<div className="request-entry">
     					<TextareaAutosize value={changeRequestFields[field]} onChange={(e) => this.changeFieldValue(field, e.target.value)} className="request-cell value" />
     				</div>
+            <div className="request-entry">
+              <pre className="request-cell value existing">{existingRecord[field]}</pre>
+            </div>
     			</div>
         </div>
       );
