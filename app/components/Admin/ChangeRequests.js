@@ -30,22 +30,21 @@ class ChangeRequests extends React.Component {
           );
           break;
         case 'ServiceChangeRequest':
-          console.log(changeRequests)
           requestsToRender.push(
-            <div className="service-wrapper" key={`cr${changeRequest.id}`}>
+            <div key={`cr${changeRequest.id}`} className="service-wrapper">
               { ChangeRequests.renderRequestWrapper(changeRequest, actionHandler) }
             </div>,
           );
           break;
         default:
-          console.log('rendering unknown', changeRequest);
-          // TODO Pretty sure there are no other types for now
+          // console.log('rendering unknown', changeRequest);
+          // TODO: Pretty sure there are no other types for now
       }
     });
 
     if (requestsToRender.length) {
       requestsToRender.unshift(
-        <span>
+        <span key="title">
           <hr />
           <h3>Services</h3>
         </span>
@@ -97,7 +96,6 @@ class ChangeRequests extends React.Component {
     const resourceToServices = {};
 
     changeRequests.forEach((changeRequest) => {
-      // console.log(changeRequest)
       const resourceID = changeRequest.resource.id;
 
       if (!resourceToChangeRequests.hasOwnProperty(resourceID)) {
