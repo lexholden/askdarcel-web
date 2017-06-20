@@ -77,7 +77,9 @@ class ChangeRequest extends React.Component {
   changeFieldValue(key, value) {
     const tempChangeRequestFields = this.state.changeRequestFields;
     tempChangeRequestFields[key] = value;
+    // tempChangeRequestFields.edited = true;
     this.setState({ changeRequestFields: tempChangeRequestFields });
+    console.log('made an edit:', this.state.changeRechangeRequestFields, tempChangeRequestFields);
   }
 
   renderChangeRequest() {
@@ -100,6 +102,7 @@ class ChangeRequest extends React.Component {
             </div>
             <div className="request-entry">
               <p className="request-cell value existing">{existingRecord[field] || '{ NEW }'}</p>
+              {/* <pre>{ JSON.stringify(this.state.changeRequestFields, null, 2) }</pre> */}
             </div>
           </div>
         </div>
@@ -110,6 +113,7 @@ class ChangeRequest extends React.Component {
   }
 
   render() {
+    // console.log(this.props.changeRequest, this.changeRequestFields)
     return (
       <div className="change-log">
         <Actions

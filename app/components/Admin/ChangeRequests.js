@@ -3,6 +3,7 @@
 import React from 'react';
 import * as _ from 'lodash/fp/object';
 import ChangeRequest from './ChangeRequest';
+import * as ChangeRequestTypes from './ChangeRequestTypes';
 import ProposedService from './ProposedService';
 
 class ChangeRequests extends React.Component {
@@ -116,6 +117,8 @@ class ChangeRequests extends React.Component {
       resourceObjects[resourceID] = service.resource;
     });
 
+    // console.log(changeRequests)
+
     for (let resourceID in resourceObjects) {
       const collapsed = this.state.resourceToCollapsed[resourceID] ? 'collapsed' : '';
       changeRequestWrappers.push(
@@ -125,6 +128,9 @@ class ChangeRequests extends React.Component {
             <span className={`material-icons expander ${collapsed} right`}>expand_less</span>
           </h2>
           <div className={`group-content ${collapsed}`}>
+            <div className="btn-group right">
+              <button className="btn" onClick={() => this.props.bulkActionHandler(ChangeRequestTypes.APPROVE, resourceToChangeRequests[resourceID])}>Accept All</button>
+            </div>
             {ChangeRequests.renderIndividualRequests(resourceToChangeRequests[resourceID], actionHandler)}
             {ChangeRequests.renderProposedServices(resourceToServices[resourceID], actionHandler)}
           </div>
