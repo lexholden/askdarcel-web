@@ -1,33 +1,34 @@
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtendedDefinePlugin = require('extended-define-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
 
-//Change this to config.js and add a key to the config file
-var config = require(path.resolve(__dirname, 'app/utils/config.example.js'));
+// Change this to config.js and add a key to the config file
+const config = require(path.resolve(__dirname, 'app/utils/config.example.js'));
 
-var appRoot = path.resolve(__dirname, 'app/');
-var buildDir = path.resolve(__dirname, 'build');
+const appRoot = path.resolve(__dirname, 'app/');
+const buildDir = path.resolve(__dirname, 'build');
 
 module.exports = {
   context: __dirname,
-  entry: ['whatwg-fetch', path.resolve(appRoot, 'init.js')],
+  entry: ['react-hot-loader/patch', 'whatwg-fetch', path.resolve(appRoot, 'init.js')],
   output: {
     path: buildDir,
     publicPath: '/dist/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'Ask Darcel',
-      template: 'app/index.html'
+      template: 'app/index.html',
     }),
     new ExtendedDefinePlugin({
-      CONFIG: config
-    })
+      CONFIG: config,
+    }),
   ],
   devtool: 'source-map',
   module: {
@@ -35,18 +36,20 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: [
+          { loader: 'react-hot-loader' },
           {
             loader: 'babel-loader',
             options: {
-              presets: ['es2015', 'react', 'stage-2']
-            }
-          }
+              presets: ['es2015', 'react', 'stage-2'],
+              // plugins: ['react-hot-loader/babel'],
+            },
+          },
         ],
         exclude: [/node_modules/, /typings/],
       },
       {
         test: /\.s?css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -54,10 +57,10 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: 'fonts/[name].[ext]'
-            }
-          }
-        ]
+              name: 'fonts/[name].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -66,19 +69,19 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name]-[sha512:hash:hex:8].[ext]',
-            }
+            },
           },
           {
             loader: 'image-webpack-loader',
             options: {
               bypassOnDebug: true,
               optimizationLevel: 7,
-              interlaced: false
-            }
-          }
-        ]
-      }
-    ]
+              interlaced: false,
+            },
+          },
+        ],
+      },
+    ],
   },
   devServer: {
     contentBase: buildDir,
@@ -88,10 +91,10 @@ module.exports = {
     proxy: {
       '/api/*': {
         target: process.env.API_URL || 'http://localhost:3000',
-        rewrite: function(req) {
+        rewrite(req) {
           req.url = req.url.replace(/^\/api/, '');
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };

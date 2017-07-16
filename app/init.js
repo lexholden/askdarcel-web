@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
+// import { AppContainer } from 'react-hot-loader';
 
 import configureStore from './store/configureStore';
 import routes from './routes';
@@ -12,7 +13,6 @@ require('./styles/main.scss');
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-
 ReactDOM.render((
   <Provider store={store} key="provider">
     <Router history={history}>
@@ -20,3 +20,7 @@ ReactDOM.render((
     </Router>
   </Provider>
 ), document.getElementById('root'));
+
+if (module.hot) {
+  module.hot.accept();
+}

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {AddressInfo, TodaysHours, PhoneNumber, WeeklyHours, ResourceCategories, Website, StreetView} from './ResourceInfos';
+import { AddressInfo, TodaysHours, PhoneNumber, ResourceCategories, Website, StreetView } from './ResourceInfos';
 import DetailedHours from './DetailedHours';
 import CommunicationBoxes from './CommunicationBoxes';
 import Services from './Services';
