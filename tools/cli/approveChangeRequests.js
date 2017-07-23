@@ -1,68 +1,83 @@
-let AskDarcelClient = require('./AskDarcelClient');
-let darcel = new AskDarcelClient('http://localhost:8080/api');
+const fs = require('fs');
+const { join } = require('path');
+const yaml = require('js-yaml');
+const AskDarcelClient = require('./AskDarcelClient');
+
+const config = yaml.safeLoad(fs.readFileSync(join(__dirname, './config.yml'), 'utf8'));
+const darcel = new AskDarcelClient(config['api.endpoint']);
 
 function approveChangeRequests() {
-  let changeRequestLookup = {};
-  return darcel.signIn('dev-admin@sheltertech.org', 'dev-test-01')
-    .then((d) => {
-      return darcel.getData('/change_requests');
-    })
-    .then((d) => {
-      let { data } = d;
+  const changeRequestLookup = {};
+  const stats = { approved: 0, duplicates: 0, errors: 0 }
 
-      data.change_requests.forEach((changeRequest, i) => {
-        let objectId = changeRequest.object_id;
+  return darcel.signIn(config['admin.username'], config['admin.password'])
+    .then(() => darcel.getData('/change_requests'))
+    .then((d) => {
+      const { data } = d;
+      const duplicates = {};
 
-        if (changeRequestLookup[objectId] === undefined) {
-          changeRequestLookup[objectId] = {};
+      // Do a first pass over all requests to check for duplicates
+      data.change_requests.forEach((changeRequest) => {
+        const { type, object_id, id } = changeRequest;
+
+        if (changeRequestLookup[type] === undefined) {
+          changeRequestLookup[type] = {};
         }
 
-        let resourceChanges = changeRequestLookup[objectId]
+        if (changeRequestLookup[type][object_id] === undefined) {
+          changeRequestLookup[type][object_id] = { changedIDs: [] };
+        }
 
-        changeRequest.field_changes.forEach((fieldChange, i) => {
-          let { field_name, field_value } = fieldChange;
-          if (resourceChanges[field_name]) {
-            console.log('There are conflicting changes for', objectId, field_name);
-            changeRequest.valid = false
+        // Track field changes for this resource/service
+        const changes = changeRequestLookup[type][object_id];
+
+        changeRequest.field_changes.forEach((fieldChange) => {
+          const { field_name, field_value } = fieldChange;
+          changes.changedIDs.push(id);
+
+          // If we have already changed this field,
+          // play it safe and don't approve this changeRequest
+          if (changes[field_name]) {
+            changes.changedIDs.forEach((cid) => { duplicates[cid] = true; });
+            console.log('There are conflicting changes for', `resource:${changeRequest.resource.id}`, `type:${changeRequest.type}`, `object:${changeRequest.object_id}`, '\n', { field: field_name, old: field_value, new: changes[field_name] }, '\n');
           } else {
-            resourceChanges[field_name] = field_value;
+            changes[field_name] = field_value;
           }
         });
       });
 
-      // const actionItems = data.change_requests.reduce((actions, changeRequest, i) => {
-      //   // console.log(changeRequest);
-      //   if (changeRequestLookup[changeRequest.object_id] === undefined) {
-      //     changeRequestLookup[changeRequest.object_id] = [];
-      //   }
+      return data.change_requests.reduce((action, changeRequest) => {
+        return action
+          .catch(err => {
+            console.log(err);
+            stats.errors++;
+          })
+          .then(d => {
+            // If this changeRequest was not marked duplicate
+            if (!duplicates[changeRequest.id]) {
+              stats.approved++
+              const body = {};
+              changeRequest.field_changes.forEach((fieldChange) => {
+                const { field_name, field_value } = fieldChange;
+                body[field_name] = field_value;
+              });
 
-      //   if (i < 1000) {
-      //     actions.push(changeRequest);
-      //     changeRequestLookup[changeRequest.object_id] =
-      //       changeRequestLookup[changeRequest.object_id].concat(changeRequest.field_changes);
-      //   }
-      //   // change
-      //   // changeRequestLookup
-      //   return actions;
-      // }, []);
-
-      // // console.log(actionItems);
-      // return Promise.all(actionItems.reduce().map((item, i) => {
-      //   if (changeRequestLookup[item.object_id].length > 1) {
-      //     console.log('a resource has multiple change requests', item.resource.name);
-      //     return Promise.resolve('duplicate');
-      //   }
-      //   let body = item.field_changes.reduce((requestBody, change) => {
-      //     requestBody[change.field_name] = change.field_value;
-      //     return requestBody;
-      //   }, {});
-      //   return Promise.resolve(item.resource.name);
-      //   // console.log({ body, changes: item.field_changes, resource: item.resource });
-      //   return darcel.postData(`/change_requests/${item.id}/approve`, body);
-      // }));
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve(darcel.postData(`/change_requests/${changeRequest.id}/approve`, body))
+                }, 10); // Brief timeout because Promise.all with ~500 requests broke the API
+              }).then(() => console.log('approved', changeRequest.id));
+            } else {
+              console.log('not applying duplicate', changeRequest.id);
+              stats.duplicates++
+              return Promise.resolve();
+            }
+          });
+      }, Promise.resolve('first'));
     })
     .then((d) => {
-      console.log(JSON.stringify(d));
+      console.log('completed', stats);
+      // console.log(JSON.stringify(d));
     })
     .catch((e) => {
       console.log(e);
