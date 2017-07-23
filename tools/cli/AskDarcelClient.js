@@ -22,15 +22,6 @@ class AskDarcelClient {
   postData(path, body) {
     return ax.post(`${this.endpoint}${path}`, body, { headers: this.headers });
   }
-
-  retrieveChangeRequestObject(changeRequest) {
-    switch (changeRequest.type) {
-      case 'ResourceChangeRequest': return changeRequest.resource;
-      default:
-        console.log('unknown type', changeRequest.type);
-        return {}
-    }
-  }
 }
 
 module.exports = AskDarcelClient;
