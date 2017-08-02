@@ -55,6 +55,7 @@
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
+    "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^1.7.0",
     "node-sass": "^3.7.0",
     "query-string": "^4.2.2",
@@ -66,7 +67,8 @@
   },
   "scripts": {
     "testserver": "cross-env NODE_ENV=test karma start internals/testing/karma.conf.js",
-    "test": "cross-env NODE_ENV=test karma start internals/testing/karma.conf.js --single-run",
+    "test": "cross-env NODE_ENV=test karma start internals/testing/karma.conf.js",
+    "test:watch": "npm run test -- --no-single-run",
     "lint": "eslint app/",
     "postinstall": "npm run build",
     "build": "cross-env NODE_ENV=production webpack",
