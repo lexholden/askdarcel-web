@@ -86,10 +86,13 @@ module.exports = {
     devtool: 'source-map',
     colors: true,
     proxy: {
-      '/api/*': {
-        target: process.env.API_URL || 'http://localhost:3000',
-        rewrite: function(req) {
-          req.url = req.url.replace(/^\/api/, '');
+      '/api/**': {
+        target: 'https://staging.askdarcel.org',
+        changeOrigin: true,
+        secure: true,
+        rewrite(req) {
+          console.log(req.url)
+          // req.url = req.url.replace(/^\/api/, '');
         }
       }
     }
