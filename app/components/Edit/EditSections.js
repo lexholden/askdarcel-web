@@ -486,8 +486,7 @@ class EditSections extends React.Component {
   }
 
   certifyHAP() {
-    dataService.post(`/resources/${this.state.resource.id}/certify`).then(d => {
-      console.log('certified', d);
+    dataService.post(`/api/resources/${this.state.resource.id}/certify`).then(d => {
       const res = this.state.resource;
       res.certified = true;
       this.setState({ resource: res });
@@ -495,7 +494,7 @@ class EditSections extends React.Component {
   }
 
   formatTime(time) {
-    //FIXME: Use full times once db holds such values.
+    // FIXME: Use full times once db holds such values.
     return time.substring(0, 2);
   }
 
