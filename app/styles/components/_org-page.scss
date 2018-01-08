@@ -41,6 +41,8 @@
 		margin: 0 auto;
 		padding: 0 calc-em(20px);
 		transform: translateY(-96px);
+		// Prevent empty space to the right of image from covering other elements on page
+		pointer-events: none;
 		&--img {
 			@include aspect-ratio(1, 1);
 		  width: calc-em(130px);
@@ -71,6 +73,16 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // ORG HEADER
+
+.certified {
+	float: right;
+	height: 36px;
+	margin-right: $padding-default;
+
+	&:after {
+		clear: both;
+	}
+}
 
 .org--main--header {
 	&--title {
@@ -239,6 +251,8 @@
 			margin-top: calc-em(10px);
 			display: block;
 			text-align: center;
+			width: 100%;
+			height: auto; // Unset global height for button tag name selector
 			&-first-of-type {
 				margin-top: 0;
 			}
@@ -263,6 +277,15 @@
 				  		color: #1C72E6;
 				  	}
 				  }
+				}
+				&.service--nav--list {
+					list-style: disc;
+					margin-left: 1em;
+					list-style-position: inside;
+
+					li {
+						line-height: 1em;
+					}
 				}
 			}
 		}

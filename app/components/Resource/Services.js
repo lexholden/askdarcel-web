@@ -48,7 +48,7 @@ class Service extends Component {
   render() {
     let { infoHidden } = this.state;
     return (
-		<li className="service">
+		<li className="service" id={`service-${this.props.service.id}`} >
 			<div className="service--meta disabled-feature">
 				<p><ServiceCategory category={this.props.service.category} /></p>
 				<p>updated {this.props.service.updated_date}</p>
@@ -65,7 +65,7 @@ class Service extends Component {
         <div className="service-application-process-container">
           <ul className="service--details">
             <ServiceEligibility subject='How to apply' result={this.props.service.application_process}/>
-            <ServiceEligibility subject='Eligibility' result={this.props.service.eligibility}/>
+            <ServiceEligibilities subject='Eligibilities' eligibilities={this.props.service.eligibilities}/>
             <ServiceEligibility subject='Required documents' result={this.props.service.required_documents}/>
             <ServiceEligibility subject='Fees' result={this.props.service.fee}/>
             {this.props.service.notes.length ? <Notes notes={this.props.service.notes}/> : null  }
@@ -86,12 +86,12 @@ class Service extends Component {
 
 class WeeklyHours extends Component {
 	render() {
-		return (
+		return this.props.schedule.schedule_days.length > 0 ? (
 			<li className="service--details--item">
 				<header>Hours</header>
 				<div className="service--details--item--info"><DetailedHours schedule={this.props.schedule.schedule_days} /></div>
 			</li>
-		);
+		) : null;
 	}
 }
 
@@ -115,11 +115,22 @@ class ServiceEligibility extends Component {
   }
 }
 
+class ServiceEligibilities extends Component {
+  render() {
+    return this.props.eligibilities.length > 0 ? (
+      <li className="service--details--item">
+        <header>{this.props.subject}</header>
+        <div className="service--details--item--info">{this.props.eligibilities.map(eligibility => <p>{eligibility.name}</p>)}</div>
+      </li>
+    ) : null;
+  }
+}
+
 class Notes extends Component {
   render() {
-    let notes = this.props.notes.map((note, i) => {
+    let notes = this.props.notes ?  this.props.notes.map((note, i) => {
       return <Note note={note} key={i} />
-    });
+    }) : [];
 
     return (
       <li className="service--details--item">

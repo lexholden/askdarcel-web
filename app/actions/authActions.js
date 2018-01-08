@@ -4,38 +4,38 @@ import { browserHistory } from 'react-router';
 
 function adminLoginRequest() {
   return {
-    type: types.ADMIN_LOGIN_REQUEST
-  }
+    type: types.ADMIN_LOGIN_REQUEST,
+  };
 }
 
 function adminLoginSuccess() {
   return {
-    type: types.ADMIN_LOGIN_SUCCESS
-  }
+    type: types.ADMIN_LOGIN_SUCCESS,
+  };
 }
-
 
 function adminLoginError() {
   return {
-    type: types.ADMIN_LOGIN_ERROR
-  }
+    type: types.ADMIN_LOGIN_ERROR,
+  };
 }
+
 export default {
-  adminLogin(email, password){
+  adminLogin(email, password) {
     return dispatch => {
-      dispatch(adminLoginRequest())
+      dispatch(adminLoginRequest());
       authApi.adminLogin(email, password)
         .then(response => {
-          if( response.status === 200) {
+          if ( response.status === 200) {
             dispatch(adminLoginSuccess());
             const headers = response.headers;
             localStorage.setItem('authHeaders', JSON.stringify({
-              "access-token":headers.get('access-token'),
+              'access-token': headers.get('access-token'),
               client: headers.get('client'),
-              uid: headers.get('uid')
+              uid: headers.get('uid'),
             }));
-            browserHistory.push('/admin');
-          } else if( response.status === 401) {
+            browserHistory.push('/admin/changes');
+          } else if (response.status === 401) {
             alert('Incorrect email or password, please try again.');
             dispatch(adminLoginError());
           }

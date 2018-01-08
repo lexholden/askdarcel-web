@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-autosize-textarea';
-import * as ChangeRequestTypes from './ChangeRequestTypes';
-import Actions from './Actions';
+
+import * as DataService from '../../utils/DataService';
+import { getAuthRequestHeaders } from '../../utils/index';
 
 class ChangeRequest extends React.Component {
   constructor(props) {
@@ -21,39 +22,21 @@ class ChangeRequest extends React.Component {
     this.setState({ changeRequestFields: tempChangeRequestFields });
   }
 
-  retrieveModifiedObject() {
-    const changeRequest = this.props.changeRequest;
-    const resource = changeRequest.resource;
-    // "ChangeRequest" is 13 characters, so this will give us the first part of the string
-    const objectType = changeRequest.type;
-    let object = {};
-
-    switch (objectType) {
+  getExistingValueFromChangeRequest(changeRequest, fieldName, fieldValue) {
+    let { resource } = changeRequest;
+    switch (changeRequest.type) {
       case 'ResourceChangeRequest':
-        object = resource;
-        break;
-      case 'ServiceChangeRequest':
-        object = resource.services.filter(service => service.id === changeRequest.object_id)[0];
-        break;
-      case 'ScheduleDayChangeRequest':
-        object = resource.schedule.schedule_days
-          .filter(day => day.id === changeRequest.object_id)[0];
-        break;
       case 'AddressChangeRequest':
-        object = resource.address;
-        break;
       case 'PhoneChangeRequest':
         // console.log(resource, changeRequest);
         object = resource.phones.filter(phone => phone.id === changeRequest.object_id)[0];
         break;
       case 'NoteChangeRequest':
-        const resourceNotes = resource.notes.filter(note => note.id === changeRequest.object_id);
-        if (resourceNotes.length > 0) {
-          object = resourceNotes[0];
-        } else {
-          object = this.findNoteFromServices(resource.services, changeRequest.object_id);
-        }
-        break;
+        return resource[fieldName] ? resource[fieldName] : false;
+      case 'ScheduleDayChangeRequest':
+        return 'date change';
+      case 'ServiceChangeRequest':
+        return resource.services.find(service => service.id === changeRequest.object_id)[fieldName];
       default:
         console.log('Unknown Change Request Type', objectType);
     }
@@ -75,8 +58,7 @@ class ChangeRequest extends React.Component {
   changeFieldValue(key, value) {
     const tempChangeRequestFields = this.state.changeRequestFields;
     tempChangeRequestFields[key] = value;
-    // tempChangeRequestFields.edited = true;
-    this.setState({ changeRequestFields: tempChangeRequestFields });
+    this.setState({ changeRequestFields: Object.assign({}, tempChangeRequestFields) });
   }
 
   getExistingValueFromChangeRequest(changeRequest, fieldName, fieldValue) {
@@ -149,15 +131,31 @@ class ChangeRequest extends React.Component {
 
   render() {
     return (
-      <div className="change-log">
-        <Actions
-          id={this.props.changeRequest.id}
-          changeRequestFields={this.state.changeRequestFields}
-          actionHandler={this.props.actionHandler}
-          approveAction={ChangeRequestTypes.APPROVE}
-          rejectAction={ChangeRequestTypes.DELETE}
-        />
-        {this.renderChangeRequest(this.props.changeRequest)}
+      <div className="change-request">
+
+        <h4>{ this.props.title || '' }</h4>
+
+        <div className="changes">
+          {
+            this.props.changeRequest.field_changes.map(f => (
+              <div key={f.field_name}>
+                {this.renderFieldChange(f)}
+              </div>
+            ))
+          }
+        </div>
+
+        <div className="actions request-cell btn-group">
+          <button onClick={() => this.approve()}>
+            <i className="material-icons">done</i>
+            Approve
+          </button>
+
+          <button onClick={() => this.reject()} className="danger">
+            <i className="material-icons">delete</i>
+            Reject
+          </button>
+        </div>
       </div>
     );
   }

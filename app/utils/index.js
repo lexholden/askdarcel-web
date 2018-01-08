@@ -17,15 +17,15 @@ export function getAuthRequestHeaders() {
  * '1330' to new Date(..., ..., ..., 13, 30)
  */
 function timeToDate(hours) {
-  const date = new Date();
-  if (hours) {
-    const hoursString = hours.toString();
-    date.setHours(hoursString.substring(0, hoursString.length - 2));
-    date.setMinutes(hoursString.substring(hoursString.length - 2, hoursString.length));
-    date.setSeconds(0);
-    return date;
+  if (hours === null) {
+    return null;
   }
-  return null;
+  const date = new Date();
+  const hoursString = hours.toString();
+  date.setHours(hoursString.substring(0, hoursString.length - 2));
+  date.setMinutes(hoursString.substring(hoursString.length - 2, hoursString.length));
+  date.setSeconds(0);
+  return date;
 }
 
 /**
@@ -37,10 +37,10 @@ function timeToDate(hours) {
  */
 export function timeToString(hours) {
   const date = timeToDate(hours);
-  if (date) {
-    return date.toLocaleTimeString().replace(/:\d+ /, ' ');
+  if (date === null) {
+    return null;
   }
-  return null;
+  return date.toLocaleTimeString().replace(/:\d+ /, ' ');
 }
 
 /**
@@ -57,14 +57,14 @@ export function timeToString(hours) {
  */
 export function timeToTimeInputValue(hours) {
   const date = timeToDate(hours);
-  if (date) {
-    const hour = date.getHours();
-    const strHour = (hour < 10) ? `0${hour.toString()}` : hour.toString();
-    const minute = date.getMinutes();
-    const strMinute = (minute < 10) ? `0${minute.toString()}` : minute.toString();
-    return `${strHour}:${strMinute}`;
+  if (date === null) {
+    return null;
   }
-  return null;
+  const hour = date.getHours();
+  const strHour = (hour < 10) ? `0${hour.toString()}` : hour.toString();
+  const minute = date.getMinutes();
+  const strMinute = (minute < 10) ? `0${minute.toString()}` : minute.toString();
+  return `${strHour}:${strMinute}`;
 }
 
 export function stringToTime(timeString) {
@@ -91,6 +91,7 @@ export function createTemplateSchedule() {
       day,
       opens_at: null,
       closes_at: null,
+      id: i + 1,
     });
   }
 
@@ -143,4 +144,15 @@ export function sortScheduleDays(scheduleDays) {
   return scheduleDays.sort((a, b) => (
     a.day !== b.day ? days.indexOf(a.day) - days.indexOf(b.day) : a.opens_at - b.opens_at
   ));
+}
+
+/**
+ * Round numbers to a specified decimal place.
+ *
+ * E.g.
+ * round(-122.312360, 4) -> -122.3124
+ * round(33.102938, 2) -> -33.10
+ */
+export function round(value, decimals) {
+  return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }

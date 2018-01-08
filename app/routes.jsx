@@ -12,16 +12,15 @@ import Google from './utils/google';
 import CreateAccount from './components/User/CreateAccount';
 import TestAuth from './components/User/TestAuth';
 import Admin from './components/Admin/Admin';
+import ChangeRequests from './components/Admin/ChangeRequests';
 
 import { RequireAuth } from './components/Auth/RequireAuth';
-
 
 function redirectToRoot (nextState, replace) {
   replace({
     pathname: '/',
   });
 };
-
 
 // Adapted from
 // https://github.com/ReactTraining/react-router/issues/2019#issuecomment-256591800
@@ -33,14 +32,15 @@ function scrollToTop(prevState, nextState) {
   }
 }
 
-
 export default (
   <Route path="/" component={ App } onChange={ scrollToTop } >
     <IndexRoute component={ CategoryPage } />
     <Route name="resources" path="/resources" component={ ResourcesTable } />
     <Route name="editResource" path="/resource/edit" component={ EditSections } />
+    <Route name="newResource" path="/resource/new" component={ EditSections } />
     <Route name="resource" path="/resource" component={ Resource }  />
     <Route name="admin" path="/admin" component={ RequireAuth(Admin) } />
+    <Route name="changeRequests" path="/admin/changes" component={ RequireAuth(ChangeRequests) } />
     <Route name="login" path="/login" component={ Login } />
     <Route path="*" onEnter={ redirectToRoot } />
   </Route>

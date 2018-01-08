@@ -35,6 +35,7 @@ class EditPhone extends Component {
         <input
           id={htmlID}
           type="tel"
+          className="input"
           placeholder="Phone number"
           data-field="number"
           defaultValue={phone.number}
@@ -42,6 +43,7 @@ class EditPhone extends Component {
         />
         <input
           type="tel"
+          className="input"
           placeholder="Service type"
           data-field="service_type"
           defaultValue={phone.service_type}
@@ -64,5 +66,6 @@ EditPhone.propTypes = {
   }).isRequired,
 };
 
-const EditPhones = editCollectionHOC(EditPhone, 'Phones', {});
+const EditPhones = editCollectionHOC(EditPhone, 'Phones', {}, false);
+EditPhones.displayName = 'EditPhones';
 export default EditPhones;

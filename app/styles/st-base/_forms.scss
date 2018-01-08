@@ -18,7 +18,7 @@ input, textarea {
 	font-size: calc-em(17px);
 	color: #333333;
   &:active, &:hover, &:focus {
-    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
   }
 }
 
@@ -37,6 +37,10 @@ button {
   font-weight: 600;
   &:active, &:hover, &:focus {
     box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+  }
+
+  &.danger {
+    background: $color-red;
   }
 }
 

@@ -1,116 +1,66 @@
 .admin {
-  background: $color-grey2;
+  // Absolute so that individual scroll boxes can fill the space
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
 
-  .change-requests {
-    margin: 12px auto;
-    width: 70%;
+  .results-table {
+    box-shadow: none;
 
-    h1.page-title {
-      padding: calc-em(15px);
-    }
+    // List of resources
+    &.summary {
 
-    .group-container {
-      background: $color-white;
-      box-shadow: 2px 2px 4px #DDD;
-      margin: calc-em(15px) 0;
-      padding: calc-em(10px) calc-em(10px) 0;
-      transition: all 0.3s ease-in-out;
-
-      &.collapsed {
-        box-shadow: none;
-        margin: 0;
-
-        h2 {
-          padding-bottom: calc-em(5px);
-        }
+      > * {
+        border-right: 1px solid #DDD;
       }
 
-      &:hover {
-        background: $color-grey0;
-      }
-
-      h2 {
-        color: $color-title;
-        cursor: pointer;
-        user-select: none;
-        padding: 0 $padding-default calc-em(15px);
-
-        span.sub {
-          font-size: 14px;
-          color: $color-textfade;
-          padding: 0 $padding-default;
-        }
-
-      }
-
-      .expander {
-        transition: 0.2s ease;
-        float: right;
-        margin: 3px 0;
-
-        &.collapsed {
-          transform: rotate(180deg);
-        }
-      }
-
-      &:last-of-type {
-        margin-bottom: calc-em(15px);
-      }
-
-      .group-content {
-        transition: 0.2s ease;
-        overflow: hidden;
+      .resource-title {
         padding: $padding-default;
+        cursor: pointer;
 
-        h3 {
-          margin: 16px;
+        header {
+          margin: 0;
         }
+      }
 
-        .service-wrapper {
-          margin-bottom: 26px;
+      h1.page-title {
+        padding: calc-em(15px);
+      }
 
-          &:last-of-type {
-            margin-bottom: 0;
-          }
-        }
-
-        &.collapsed {
-          opacity: 0;
-          max-height: 0;
-          padding: 0;
+      .results-table-entry {
+        &.active {
+          border-right: 0;
         }
       }
     }
 
-    .request-container {
-      // display: inline-block;
-      display: flex;
+    // Resource details with changeRequestss
+    &.details {
+      position: relative;
+      max-width: 5000px;
+      height: calc(100%);
+      background: #EEE;
+      overflow: auto;
 
-      .change-log {
-        width: 100%;
-
-        label {
-          font-weight: bold;
-          text-transform: capitalize;
-          margin: 10px;
-          padding: $padding-default;
-        }
-
-        .change-wrapper {
-          width: 80%;
-          float: left;
-        }
-
+      h2, h3, h4 {
+        text-align: center;
+        margin: auto;
       }
 
-      .request-fields {
-        display: table;
-        width: 100%;
-        border-collapse: collapse;
-        vertical-align: top;
-        margin-bottom: calc-em(10px);
+      .titlebox,
+      .change-request-wrapper {
+        background: #FFF;
+        padding: $padding-default;
+        // margin: 0 0 $padding-default;
         
+        a {
+          float: right;
+         }
 
+<<<<<<< HEAD
         .request-entry {
           display: table-row;
           min-height: calc-em(50px);
@@ -120,49 +70,63 @@
             color: $color-textfade;
             white-space: pre-wrap;
           }
+=======
+      }
+>>>>>>> 071b389dd603c161321f9223c9be47ff3568d4ee
 
-          .request-cell {
-            // display: table-cell;
-            text-align: left;
-            border-radius: $padding-default;
-            vertical-align: middle;
-            padding: calc-em(10px);
+      .change-request-wrapper {
+        padding-left: 16px;
+        // margin: $padding-default;
+        // border-left: 0.4375rem solid #116EEA;
+
+        .change-request {
+          background: #EEE;
+          margin: $padding-default 0;
+          padding: 16px;
+
+          .change-wrapper {
+            margin: 16px 0 $padding-default;
+
+            label {
+              font-weight: bold;
+              text-transform: capitalize;
+              margin: 0 $padding-default;
+              padding: $padding-default;
+
+              sub {
+                margin: 0 $padding-default;
+                float: right;
+                color: $color-textfade;
+                line-height: 1.5;
+              }
+            }
+
+            p.change-existing {
+              padding: 0 16px $padding-default;
+              color: crimson;
+            }
+
+            textarea {
+              background: #FFF;
+              border-radius: $padding-default;
+            }
           }
-          textarea.request-cell {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            width: 100%;
-            font-size: 1.125rem;
-            border-radius: 6px;
-            border: 1px solid #BBB;
-          }
 
-          .name {
-            width: 25%;
-            border-right: 1px solid black;
-          }
+        }
 
-          .value {}
+        .actions {
+          text-align: right;
+          margin: 16px $padding-default 0;
 
-          textarea.time-value {
-            width: 50%;
+          button {
+            margin-right: $padding-default;
           }
         }
-      }
-    }
-  }
 
-  .actions {
-    display: inline-block;
-    float: right;
-    margin: 26px;
-    .material-icons {
-      display: inline-block;
-      cursor: pointer;
-      padding: $padding-default;
-      margin: $padding-default;
-      width: calc-em(24px);
+        .changes {
+          clear: both;
+        }
+      }
     }
   }
 }

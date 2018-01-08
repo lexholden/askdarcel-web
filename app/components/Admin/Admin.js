@@ -1,9 +1,4 @@
 import React from 'react';
-import Loader from '../Loader';
-import ChangeRequests from './ChangeRequests';
-import * as dataService from '../../utils/DataService';
-import * as changeRequestConstants from './ChangeRequestTypes';
-import { getAuthRequestHeaders } from '../../utils/index';
 
 class Admin extends React.Component {
   constructor() {
@@ -60,47 +55,18 @@ class Admin extends React.Component {
     );
   }
 
-  actionHandler(id, action, changeRequestFields) {
-    const requestString = action.replace(/{(.*?)}/, id);
-    let removalFunc;
-    let logMessage;
-    let body = {};
+  // bulkActionHandler(action, changeRequests) {
+  //   return Promise.all(
+  //     changeRequests.map((changeRequest) => { // Create an action handler for each CR
+  //       const changeRequestFields = changeRequest.field_changes.reduce((a, c) => {
+  //         if (a[c.field_name] !== undefined) {
+  //           console.warn('Discarding duplicate field name in action handler: ', { current: a[c.field_name], duplicate: c });
+  //           return a;
+  //         }
 
-    switch (action) {
-      case changeRequestConstants.APPROVE:
-        logMessage = 'Error while trying to approve change request.';
-        removalFunc = this.removeChangeRequest;
-        body = { change_request: changeRequestFields };
-        break;
-      case changeRequestConstants.DELETE:
-        logMessage = 'Error while trying to reject change request.';
-        removalFunc = this.removeChangeRequest;
-        body = { change_request: changeRequestFields };
-        break;
-      case changeRequestConstants.APPROVE_SERVICE:
-        removalFunc = this.removeService;
-        logMessage = 'Error while trying to approve service';
-        body = { service: changeRequestFields };
-        break;
-      case changeRequestConstants.REJECT_SERVICE:
-        removalFunc = this.removeService;
-        logMessage = 'Error while trying to reject service';
-        break;
-      default:
-        throw Error(`Unknown action type: ${action}`);
-    }
-
-    return dataService.post(requestString, body, getAuthRequestHeaders())
-
-      .then((response) => {
-        if (response.ok) { return removalFunc(id); }
-        throw Error(logMessage);
-      })
-
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  //         a[c.field_name] = c.field_value;
+  //         return a;
+  //       }, {});
 
   removeChangeRequest(changeRequestID) {
     this.setState({

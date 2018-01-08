@@ -64,7 +64,7 @@ function approveChangeRequests() {
 
               return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                  resolve(darcel.postData(`/change_requests/${changeRequest.id}/approve`, body))
+                  resolve(darcel.postData(`/change_requests/${changeRequest.id}/approve`, { change_request: body }))
                 }, 10); // Brief timeout because Promise.all with ~500 requests broke the API
               }).then(() => console.log('approved', changeRequest.id));
             } else {
